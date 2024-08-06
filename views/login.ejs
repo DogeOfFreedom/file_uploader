@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>File Uploader</title>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <form method="POST" action="/login">
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" value="<%= locals.username ? locals.username : ''  %>" />
+      <label for="Password">Password</label>
+      <input type="password" name="password" id="password" value="<%= locals.password ? locals.password : ''  %>" />
+      <% if (locals.error) { %>
+        <p><%= locals.error %></p>  
+      <% } %>
+      <button type="submit">Submit</button>
+      <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+    </form>
+  </body>
+</html>

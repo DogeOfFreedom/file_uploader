@@ -12,6 +12,8 @@ app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
+app.use(express.urlencoded({ extended: true }));
+
 // Static files
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -46,6 +48,8 @@ require("./controllers/passport");
 // Routes
 const router = require("./routes/general");
 app.use(router);
+const protect = require("./routes/protected");
+app.use(protect);
 
 // error handler
 app.use((err, req, res, next) => {
