@@ -26,3 +26,19 @@ model User {
   password  String
   createdAt DateTime @default(now())
 }
+
+model File {
+  id        Int      @id @default(autoincrement())
+  filename  String
+  createdAt DateTime @default(now())
+  size      Int
+  url       String
+  folder    Folder?  @relation(fields: [folderId], references: [id]) // Defines relationship with folder
+  folderId  Int? // FK
+}
+
+model Folder {
+  id         Int    @id @default(autoincrement())
+  foldername String @unique
+  files      File[] // Defines relationship with File
+}

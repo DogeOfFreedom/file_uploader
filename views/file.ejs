@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="../style.css" />
+    <title>File Uploader</title>
+  </head>
+  <body>
+    <p><b>Filename:</b> <%= locals.file.filename %></p>
+    <p><b>Size:</b> <%= locals.file.size %></p>
+    <p><b>Upload Date:</b> <%= locals.file.createdAt %></p>
+    <a href="/files/download?fileId=<%= locals.file.id %>">
+      <button>Download</button>
+    </a>
+  </body>
+</html>

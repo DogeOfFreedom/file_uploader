@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>File Uploader</title>
+</head>
+<body>
+    <%- include('./templates/header') %>
+    <h1>File Directory</h1>
+    <ul>
+    <% if(locals.files.length > 0) { %>
+        <% locals.files.forEach(file => { %> 
+            <li>
+                <a class="file" href="/files/file?fileId=<%=file.id%>">
+                    <%= file.filename %>
+                </a>
+            </li>
+        <% }) %> 
+    <% } %>
+    <% if (locals.folders.length > 0) { %>
+        <% locals.folders.forEach(folder => { %> 
+        <li><span class="folder"><%= folder.foldername %></span>
+            <% if (folder.files.length > 0) { %>
+                <ul>
+                    <% folder.files.forEach(file => { %>
+                        <li>
+                            <a class="file" href="/files/file?fileId=<%=file.id%>">
+                                <%= file.filename %>
+                            </a>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } %>    
+        </li>
+        <% }) %> 
+    <% } %>
+    </ul>  
+</body>
+</html>

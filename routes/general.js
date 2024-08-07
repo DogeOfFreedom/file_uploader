@@ -5,6 +5,7 @@ const { PrismaClient } = require("@prisma/client");
 const { populateDB } = require("../controllers/populate");
 const { createUser } = require("../controllers/users");
 const { checkForErrors } = require("../controllers/validation");
+const { authenticateUser } = require("../controllers/auth");
 
 const prisma = new PrismaClient();
 
@@ -30,11 +31,12 @@ router.post(
         where: { username: value },
       });
       if (!user) {
+        // username not taken
         return true;
       }
-      return false;
+      throw new Error("Username taken");
     })
-    .withMessage("Usernsgseame already taken"),
+    .withMessage("Username already taken"),
   body("password")
     .trim()
     .isLength({ min: 5 })
@@ -44,26 +46,12 @@ router.post(
     .custom((value, { req }) => value === req.body.password)
     .withMessage("Passwords must match"),
   checkForErrors,
-  createUser
+  createUser,
+  authenticateUser
 );
 
 // Login POST
-router.post("/login", (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      const { username, password } = req.body;
-      return res.render("login", {
-        username,
-        password,
-        error: "Incorrect User Details",
-      });
-    }
-    return req.login(user, () => res.redirect("/upload"));
-  })(req, res, next);
-});
+router.post("/login", authenticateUser);
 
 // Logout
 router.get("/logout", (req, res, next) => {

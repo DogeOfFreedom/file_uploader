@@ -6,7 +6,7 @@ const checkForErrors = (req, res, next) => {
   if (!errorsObj.isEmpty()) {
     const firstErrorMsg = errorsObj.errors[0].msg;
     const { username, password, confirmPassword } = req.body;
-    res.render("index", {
+    res.render("signup", {
       username,
       password,
       confirmPassword,

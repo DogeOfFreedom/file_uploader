@@ -7,11 +7,32 @@
     <title>File Uploader</title>
   </head>
   <body>
+    <%- include('./templates/header') %>
+
+    <!-- File Upload -->
     <h1>Upload File</h1>
-    <form method="post" action="/upload" enctype="multipart/form-data">
+    <form method="post" action="/file" enctype="multipart/form-data">
+      <label for="folder">Folder</label>
+      <select name="folder" id="folder">
+        <option value="No Folder">No Folder</option>
+        <% if (locals.folders.length > 0) { %>
+          <% locals.folders.forEach(folder => { %>
+            <option value="<%= folder.foldername %>"><%= folder.foldername %></option>
+          <% }) %>
+        <% } %>
+      </select>
       <label for="file">Upload File</label>
       <input type="file" name="file" id="file" />
       <button>Submit File</button>
+    </form>
+    <a href="/files">Browse Files</a>
+
+    <!-- Create Folder -->
+    <h1>Create Folder</h1>
+    <form method="post" action="/folder">
+      <label for="foldername">Folder Name</label>
+      <input type="text" name="foldername" id="foldername" />
+      <button>Create Folder</button>
     </form>
   </body>
 </html>
