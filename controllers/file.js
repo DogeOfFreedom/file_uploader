@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const expressAsyncHandler = require("express-async-handler");
 const fs = require("fs");
 const https = require("https");
+const { Writable } = require("stream");
 
 const prisma = new PrismaClient();
 
@@ -25,15 +26,49 @@ const downloadFile = expressAsyncHandler(async (req, res) => {
     },
   });
 
-  https.get(url, (response) => {
-    response.pipe(fs.createWriteStream("public/tmp/img.png"));
-    res.download("public/tmp/img.png");
-    fs.unlink("public/tmp/img.png", (err) => {
-      if (err) {
-        console.log(err);
-      }
+  fetch(url)
+    .then((response) => {
+      const ws = Writable.toWeb(fs.createWriteStream("public/tmp/img.png"));
+      return response.body.pipeTo(ws);
+    })
+    .then(() => {
+      res.download("public/tmp/img.png", (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          // Delete after it's sent
+          fs.unlink("public/tmp/img.png", (err) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
+
+  // https version
+  // https.get(url, (response) => {
+  //   const writeStream = fs.createWriteStream("public/tmp/img.png");
+  //   const stream = response.pipe(writeStream);
+  //   stream.on("finish", () => {
+  //     // Once finished, send file to user
+  //     res.download("public/tmp/img.png", (err) => {
+  //       if (err) {
+  //         console.log(err);
+  //       } else {
+  //         // Delete after it's sent
+  //         fs.unlink("public/tmp/img.png", (err) => {
+  //           if (err) {
+  //             console.log(err);
+  //           }
+  //         });
+  //       }
+  //     });
+  //   });
+  // });
 });
 
 module.exports = { renderSpecificFile, downloadFile };
