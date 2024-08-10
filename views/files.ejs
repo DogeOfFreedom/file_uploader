@@ -8,7 +8,7 @@
       src="https://kit.fontawesome.com/efd0a1c1d1.js"
       crossorigin="anonymous"
     ></script>
-    <script src="scripts/files.js"></script>
+    <script src="scripts/files.js" defer></script>
     <title>File Uploader</title>
   </head>
   <body>
@@ -48,19 +48,43 @@
       </div>
     </div>
     <dialog id="uploadFileModal">
-      <form method="post" action="/file" enctype="multipart/form-data">
-        <label for="file">Upload File</label>
-        <input type="file" name="file" id="file" />
-        <button class="actionBtn borderTransition">Submit File</button>
-        <button class="actionBtn borderTransition" type="button" onclick="closeUploadFileModal()">Cancel</button>
+      <form class="dialog-form" method="post" action="/file" enctype="multipart/form-data">
+        <div class="formHeader">
+          <h1>Upload File</h1>
+        </div>
+        <div class="formInputContainer">
+          <div class="fileUploadContainer">
+            <label class="customFileUpload" for="fileUpload">Choose File</label>
+            <input type="file" name="fileUpload" id="fileUpload" />
+            <div class="uploadedFile">
+              <span></span>
+            </div>            
+          </div>
+          <% if (locals.fileError) { %>
+            <p><%= locals.fileError %></p>  
+          <% } %>
+          <div class="dialogButtonContainer">
+            <button class="actionBtn borderTransition">Upload</button>
+            <button class="actionBtn borderTransition" type="button" onclick="closeUploadFileModal()">Cancel</button>
+          </div> 
+        </div>               
       </form>
     </dialog>
     <dialog id="createFolderModal">
-      <form method="post" action="/folder">
-        <label for="foldername">Folder Name</label>
-        <input type="text" name="foldername" id="foldername" />
-        <button class="actionBtn borderTransition">Create Folder</button>
-        <button class="actionBtn borderTransition" type="button" onclick="closeCreateFolderModal()">Cancel</button>
+      <form class="dialog-form" method="post" action="/folder">
+        <div class="formHeader">
+          <h1>Create Folder</h1>
+        </div>
+        <div class="formInputContainer">
+          <input type="text" placeholder="Foldername" name="foldername" id="foldername" />
+          <% if (locals.fileError) { %>
+            <p><%= locals.fileError %></p>  
+          <% } %>
+          <div class="dialogButtonContainer">
+            <button class="actionBtn borderTransition">Create</button>
+            <button class="actionBtn borderTransition" type="button" onclick="closeUploadFileModal()">Cancel</button>
+          </div> 
+        </div>     
       </form>
     </dialog>
   </body>

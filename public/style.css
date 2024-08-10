@@ -132,7 +132,7 @@ button i {
     background-color: var(--black3);
 }
 
-.actionBtn {
+.actionBtn, .customFileUpload {
     font-family: poppins;
     font-size: var(--important);
     height: var(--button-height);
@@ -171,7 +171,7 @@ button i {
     }
 }
 
-header button:hover {
+header button:hover, .actionBtn:hover, .customFileUpload:hover {
     animation: colourTransitionBorder 1s linear infinite alternate, 
     pulse 0.9s cubic-bezier( 0.79, 0.18, 0.32, 0.83 ) infinite alternate;
     color: black;
@@ -314,7 +314,6 @@ header button:hover {
     color: var(--white1);
 }
 
-
 form {
     align-self: center;
     width: 40%;
@@ -436,4 +435,71 @@ dialog form {
     background-color: var(--black4);
     font-style: italic;
     box-sizing: border-box;
+}
+
+dialog {
+    padding: 0px;
+    background-color: rgba(0,0,0,0);
+    border: 0px;
+    overflow: visible;
+}
+
+dialog::backdrop {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.dialogform {
+
+}
+
+.dialogButtonContainer {
+    display: flex;
+    justify-content: center;
+    gap: var(--medium);
+}
+
+.fileUploadContainer {
+    display: flex;
+    margin-bottom: var(--medium);
+}
+
+.formInputContainer:last-child {
+    margin-bottom: var(--medium);
+}
+
+/* Hide original input */
+input[type="file"] {
+    display: none;
+}
+
+/* Custom label that looks like the file input */
+.customFileUpload {
+    cursor: pointer; 
+    display: block;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    text-align: center;
+    padding: var(--small);
+    margin-right: 20px;
+}
+
+.uploadedFile {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex: auto;
+    
+    font-size: var(--important);
+}
+
+.uploadedFile span {
+    min-width: 330px;
+    max-width: 630px;
+    text-align: start;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

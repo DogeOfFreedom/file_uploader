@@ -10,7 +10,7 @@ const { authenticateUser } = require("../controllers/auth");
 const prisma = new PrismaClient();
 
 router.get("/", (req, res) => {
-  res.redirect("/home");
+  res.redirect("/files");
 });
 
 // Sign up
