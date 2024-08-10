@@ -10,7 +10,7 @@ const createFolder = expressAsyncHandler(async (req, res) => {
       foldername,
     },
   });
-  res.redirect("/upload");
+  res.redirect("/files");
 });
 
 module.exports = { createFolder };

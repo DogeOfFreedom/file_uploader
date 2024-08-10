@@ -372,7 +372,7 @@ dialog form {
     font-family: poppins;
     font-size: var(--page-header);
     border-radius: var(--big);
-    padding: var(--medium) 0px var(--medium) var(--medium);
+    padding: var(--medium);
     background-color: var(--black3);
     box-shadow: inset 0px 0px 0px var(--border) var(--black2);
     border: var(--border) solid var(--black4);
@@ -460,10 +460,6 @@ dialog::backdrop {
 
 .fileUploadContainer {
     display: flex;
-    margin-bottom: var(--medium);
-}
-
-.formInputContainer:last-child {
     margin-bottom: var(--medium);
 }
 
