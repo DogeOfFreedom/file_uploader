@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/efd0a1c1d1.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="scripts/files.js"></script>
+    <title>File Uploader</title>
+  </head>
+  <body>
+    <%- include('./partials/header') %>
+    <div class="main">
+      <div class="mainGrid">
+        <div class="directoryContainer">
+          <% if (locals.folders.length > 0) { %>
+            <% locals.folders.forEach(folder => { %>
+              <a class="itemLinkContainer" href="/files?folderId=<%=folder.id%>">
+                <div class="directoryItem">
+                  <i class="directoryIcon fa-solid fa-folder"></i>
+                  <p><%= folder.foldername %></p>
+                </div>
+              </a>
+            <% }) %>
+          <% } %>
+          <% if(locals.files.length > 0) { %>
+            <% locals.files.forEach(file => { %> 
+              <a class="itemLinkContainer" href="/files/file?fileId=<%=file.id%>">
+                <div class="directoryItem">
+                  <i class="directoryIcon fa-solid fa-file"></i>
+                  <p><%= file.filename %></p>
+                </div>  
+              </a>  
+            <% }) %> 
+          <% } %>
+        </div>
+        <div class="uploadContainer">
+          <button type="button" onclick="openUploadFileModal()" class="borderTransition actionBtn">
+            Upload File <i class="fa-solid fa-file-circle-plus"></i>
+          </button>
+          <button type="button" onclick="openCreateFolderModal()" class="borderTransition actionBtn">
+            Create Folder <i class="fa-solid fa-folder-plus"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <dialog id="uploadFileModal">
+      <form method="post" action="/file" enctype="multipart/form-data">
+        <label for="file">Upload File</label>
+        <input type="file" name="file" id="file" />
+        <button class="actionBtn borderTransition">Submit File</button>
+        <button class="actionBtn borderTransition" type="button" onclick="closeUploadFileModal()">Cancel</button>
+      </form>
+    </dialog>
+    <dialog id="createFolderModal">
+      <form method="post" action="/folder">
+        <label for="foldername">Folder Name</label>
+        <input type="text" name="foldername" id="foldername" />
+        <button class="actionBtn borderTransition">Create Folder</button>
+        <button class="actionBtn borderTransition" type="button" onclick="closeCreateFolderModal()">Cancel</button>
+      </form>
+    </dialog>
+  </body>
+</html>

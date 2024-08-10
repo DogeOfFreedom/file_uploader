@@ -4,14 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../style.css" />
+    <script
+      src="https://kit.fontawesome.com/efd0a1c1d1.js"
+      crossorigin="anonymous"
+    ></script>
     <title>File Uploader</title>
   </head>
   <body>
-    <p><b>Filename:</b> <%= locals.file.filename %></p>
-    <p><b>Size:</b> <%= locals.file.size %></p>
-    <p><b>Upload Date:</b> <%= locals.file.createdAt %></p>
-    <a href="/files/download?fileId=<%= locals.file.id %>">
-      <button>Download</button>
-    </a>
+    <%- include("./partials/header") %>
+    <div class="contentContainer">
+      <div class="card">
+        <img src="<%=locals.file.url%>" alt="preview_img" />
+        <div class="infoSegment">
+          <span class="infoTitle">Filename</span>
+          <span class="infoData"><%= locals.file.filename %></span>
+        </div>
+        <div class="infoSegment">
+          <span class="infoTitle">Size</span>
+          <span class="infoData"><%= locals.file.size %></span>
+        </div>
+        <div class="infoSegment">
+          <span class="infoTitle">Creation Date</span>
+          <span class="infoData"><%= locals.file.createdAt %></span>
+        </div>
+        <a href="/files/file/download?fileId=<%= locals.file.id %>">
+          <button class="borderTransition actionBtn">Download</button>
+        </a>
+      </div>
+    </div>
   </body>
 </html>

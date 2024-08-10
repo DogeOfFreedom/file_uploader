@@ -6,18 +6,32 @@
     <link rel="stylesheet" href="style.css" />
     <title>File Uploader</title>
   </head>
-  <body>
-    <h1>Login</h1>
-    <form method="POST" action="/login">
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username" value="<%= locals.username ? locals.username : ''  %>" />
-      <label for="Password">Password</label>
-      <input type="password" name="password" id="password" value="<%= locals.password ? locals.password : ''  %>" />
-      <% if (locals.error) { %>
-        <p><%= locals.error %></p>  
-      <% } %>
-      <button type="submit">Submit</button>
-      <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+  <body class="centeredBody">
+    <form class="centeredForm" method="POST" action="/login">
+      <div class="formHeader">
+        <h1>Login</h1>
+      </div>
+      <div class="formInputContainer">
+        <input 
+          type="text" 
+          name="username" 
+          id="username" 
+          placeholder="Enter Username" 
+          value="<%= locals.username ? locals.username : ''  %>" />
+        <input 
+          type="password" 
+          name="password" 
+          id="password" 
+          placeholder="Enter Password" 
+          value="<%= locals.password ? locals.password : ''  %>" />
+        <% if (locals.error) { %>
+          <p><%= locals.error %></p>  
+        <% } %>
+        <button class="borderTransition actionBtn formBtn" type="submit">Submit</button>
+        <p>Don't have an account? <a tabindex="-1" href="/signup"><button type="button" class="formBtn borderTransition actionBtn">Sign Up</button></a></p>
+        <div class="formBGElement"></div>
+      </div>
     </form>
+
   </body>
 </html>

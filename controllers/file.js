@@ -1,20 +1,90 @@
 const { PrismaClient } = require("@prisma/client");
 const expressAsyncHandler = require("express-async-handler");
+const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
-const https = require("https");
 const { Writable } = require("stream");
 
 const prisma = new PrismaClient();
 
-const renderSpecificFile = async (req, res) => {
+const uploadFile = expressAsyncHandler(async (req, res) => {
+  const { originalname, size, path } = req.file;
+  const { folder } = req.body;
+
+  // Upload files to cloudinary
+  const { url } = await cloudinary.uploader.upload(path, {
+    resource_type: "image",
+  });
+
+  const existingFolder = await prisma.folder.findUnique({
+    where: {
+      foldername: folder,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!existingFolder) {
+    await prisma.file.create({
+      data: {
+        filename: originalname,
+        size,
+        url,
+        folderId: null,
+      },
+    });
+  } else {
+    const { id } = existingFolder;
+    await prisma.file.create({
+      data: {
+        filename: originalname,
+        size,
+        url,
+        folderId: id,
+      },
+    });
+  }
+
+  // remove file once uploaded
+  fs.unlink(path, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+
+  res.redirect("/upload");
+});
+
+const renderFilesPage = expressAsyncHandler(async (req, res) => {
+  const { folderId } = req.query;
+  let files = [];
+
+  if (folderId) {
+    files = await prisma.file.findMany({
+      where: { folderId: Number(folderId) },
+    });
+    res.render("files", { folders: [], files });
+  } else {
+    files = await prisma.file.findMany({
+      where: {
+        folderId: null,
+      },
+    });
+    const folders = await prisma.folder.findMany({});
+    res.render("files", { folders, files });
+  }
+});
+
+const renderSpecificFile = expressAsyncHandler(async (req, res) => {
   const { fileId } = req.query;
   const file = await prisma.file.findUnique({
     where: {
       id: Number(fileId),
     },
   });
+  file.createdAt = new Date(file.createdAt).toDateString();
   res.render("file", { file });
-};
+});
 
 const downloadFile = expressAsyncHandler(async (req, res) => {
   const { fileId } = req.query;
@@ -71,4 +141,9 @@ const downloadFile = expressAsyncHandler(async (req, res) => {
   // });
 });
 
-module.exports = { renderSpecificFile, downloadFile };
+module.exports = {
+  uploadFile,
+  renderFilesPage,
+  renderSpecificFile,
+  downloadFile,
+};

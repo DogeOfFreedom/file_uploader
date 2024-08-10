@@ -21,7 +21,7 @@ const authenticateUser = (req, res, next) => {
         error: "Incorrect User Details",
       });
     }
-    return req.login(user, () => res.redirect("/upload"));
+    return req.login(user, () => res.redirect("/files"));
   })(req, res, next);
 };
 

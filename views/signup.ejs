@@ -6,20 +6,37 @@
     <link rel="stylesheet" href="style.css" />
     <title>File Uploader</title>
   </head>
-  <body>
-    <h1>Sign Up</h1>
+  <body class="centeredBody">
     <form method="POST" action="/signup">
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username" value="<%= locals.username ? locals.username : ''  %>" />
-      <label for="Password">Password</label>
-      <input type="password" name="password" id="password" value="<%= locals.password ? locals.password : ''  %>" />
-      <label for="confirmPassword">Confirm Password</label>
-      <input type="password" name="confirmPassword" id="confirmPassword" value="<%= locals.confirmPassword ? locals.confirmPassword : ''  %>" />
-      <% if (locals.error) { %>
-        <p><%= locals.error %></p>  
-      <% } %>
-      <button type="submit">Submit</button>
-      <p>Already have an account? <a href="/login">Login</a></p>
+      <div class="formHeader">
+        <h1>Sign Up</h1>
+      </div>
+      <div class="formInputContainer">
+        <input 
+          type="text" 
+          name="username" 
+          id="username" 
+          placeholder="Enter Username" 
+          value="<%= locals.username ? locals.username : ''  %>" />
+        <input 
+          type="password" 
+          name="password" 
+          id="password" 
+          placeholder="Enter Password" 
+          value="<%= locals.password ? locals.password : ''  %>" />
+        <input 
+          type="password" 
+          name="confirmPassword" 
+          id="confirmPassword" 
+          placeholder="Confirm Password" 
+          value="<%= locals.confirmPassword ? locals.confirmPassword : ''  %>" />
+        <% if (locals.error) { %>
+          <p><%= locals.error %></p>  
+        <% } %>
+        <button class="borderTransition actionBtn formBtn" type="submit">Submit</button>
+        <p>Already have an account? <a tabindex="-1" href="/login"><button type="button" class="formBtn borderTransition actionBtn">Login</button></a></p>
+        <div class="formBGElement"></div>
+      </div>
     </form>
   </body>
 </html>
