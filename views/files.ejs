@@ -55,20 +55,19 @@
         <div class="formInputContainer">
           <div class="fileUploadContainer">
             <label class="customFileUpload" for="fileUpload">Choose File</label>
-            <input type="file" name="file" id="fileUpload" />
+            <input type="file" name="file" id="fileUpload"/>
             <div class="uploadedFile">
               <span></span>
             </div>            
           </div>
-          <% if (locals.fileError) { %>
-            <p><%= locals.fileError %></p>  
-          <% } %>
           <div class="dialogButtonContainer">
-            <button class="actionBtn borderTransition">Upload</button>
+            <button class="actionBtn borderTransition" type="button" onclick="uploadFileSubmit()">Upload</button>
             <button class="actionBtn borderTransition" type="button" onclick="closeUploadFileModal()">Cancel</button>
           </div> 
+          <p class="none"></p>  
         </div>               
       </form>
+      <%- include('./partials/loading') %>
     </dialog>
     <dialog id="createFolderModal">
       <form class="dialog-form" method="post" action="/folder">
@@ -76,16 +75,18 @@
           <h1>Create Folder</h1>
         </div>
         <div class="formInputContainer">
-          <input type="text" placeholder="Foldername" name="foldername" id="foldername" />
+          <input type="text" placeholder="Foldername" name="foldername" id="foldername" required/>
           <% if (locals.fileError) { %>
             <p><%= locals.fileError %></p>  
           <% } %>
+          <p></p>
           <div class="dialogButtonContainer">
-            <button class="actionBtn borderTransition">Create</button>
+            <button class="actionBtn borderTransition" onclick="showLoadingFileUpload()">Create</button>
             <button class="actionBtn borderTransition" type="button" onclick="closeCreateFolderModal()">Cancel</button>
           </div> 
         </div>     
       </form>
+      <%- include('./partials/loading') %>
     </dialog>
   </body>
 </html>

@@ -7,7 +7,7 @@ const { PrismaClient } = require("@prisma/client");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const path = require("path");
 
-const port = 3000;
+const port = 3002;
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });

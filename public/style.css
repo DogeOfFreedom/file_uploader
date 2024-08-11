@@ -127,6 +127,7 @@ button i {
     display: flex;
     align-items: center;
     gap: var(--medium);
+    max-width: 100%;
     border-radius: 0px 0px var(--radius) var(--radius);
     padding: var(--small) var(--medium);
     background-color: var(--black3);
@@ -204,6 +205,10 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover {
     --radius: calc(var(--medium) - var(--border));
 
     display: flex;
+    gap: 200px;
+    /* justify-content: center; */
+    align-content: flex-start;
+    flex-wrap: wrap;
     padding: var(--medium);
     gap: var(--small);
     border-radius: var(--radius) var(--radius) 0px 0px;
@@ -448,10 +453,6 @@ dialog::backdrop {
     background-color: rgba(0,0,0,0.8);
 }
 
-.dialogform {
-
-}
-
 .dialogButtonContainer {
     display: flex;
     justify-content: center;
@@ -498,4 +499,115 @@ input[type="file"] {
     text-wrap: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+/* Loading Wheel */
+.hidden {
+    visibility: hidden;
+}
+
+.none {
+    display: none;
+}
+
+.loadingContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loading {
+    color: white;
+    transform-origin: center;
+    display: grid;
+    gap: 0px;
+
+    --timing: 1.2s;
+
+    animation: rotating calc(var(--timing)*2) infinite ease-in-out, scaleUpAndDown var(--timing) infinite ease-in-out;
+    grid-template-areas: 
+        "loading1 loading2"
+        "loading3 loading4";
+}
+
+.loading i {
+    height: var(--page-header);
+    width: var(--page-header);
+    font-size: var(--page-header);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading1 {
+    grid-area: loading1;
+    animation: fadeInAndOut calc(var(--timing)*2) infinite ease-in-out alternate;
+}
+
+#loading2 {
+    grid-area: loading2;
+    animation: fadeInAndOutAlternate calc(var(--timing)*2) infinite ease-in-out alternate;
+}
+
+#loading3 {
+    grid-area: loading3;
+    animation: fadeInAndOutAlternate calc(var(--timing)*2) infinite ease-in-out alternate;
+}
+
+#loading4 {
+    grid-area: loading4;
+    animation: fadeInAndOut calc(var(--timing)*2) infinite ease-in-out alternate;
+}
+
+@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(90deg);
+    }
+    to {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes scaleUpAndDown {
+    10% {
+        gap: 0px;
+    }
+    40% {
+        gap: 5px;
+    }
+    75% {
+        gap: 0px;
+    }    
+}
+
+@keyframes fadeInAndOut {
+    from {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInAndOutAlternate {
+    from {
+        opacity: 0.1;
+    }
+    50% {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.1;
+    }
+}
+
+#uploadFileModal p, #createFolderModal p {
+    margin: 0px;
 }

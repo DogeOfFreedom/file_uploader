@@ -10,30 +10,16 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
   const { originalname, size, path } = req.file;
   const { folder } = req.body;
 
-  console.log(cloudinary.config().cloud_name);
   // Upload files to cloudinary
   const { url } = await cloudinary.uploader
     .upload(path, {
       resource_type: "image",
-      timeout: 600000,
-    })
-    .then(() => {
-      console.log("successfully uploaded");
     })
     .catch((e) => {
       console.log(e);
     });
 
-  const existingFolder = await prisma.folder.findUnique({
-    where: {
-      foldername: folder,
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  if (!existingFolder) {
+  if (!folder) {
     await prisma.file.create({
       data: {
         filename: originalname,
@@ -43,6 +29,14 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
       },
     });
   } else {
+    const existingFolder = await prisma.folder.findUnique({
+      where: {
+        foldername: folder,
+      },
+      select: {
+        id: true,
+      },
+    });
     const { id } = existingFolder;
     await prisma.file.create({
       data: {
@@ -61,7 +55,7 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
     }
   });
 
-  res.redirect("/upload");
+  res.redirect("/files");
 });
 
 const renderFilesPage = expressAsyncHandler(async (req, res) => {
