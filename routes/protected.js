@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const multer = require("multer");
+const { body } = require("express-validator");
 const { checkAuth } = require("../controllers/auth");
 const {
   uploadFile,
@@ -7,7 +8,12 @@ const {
   renderSpecificFile,
   downloadFile,
 } = require("../controllers/file");
-const { createFolder } = require("../controllers/folder");
+const {
+  createFolder,
+  checkIfFolderExists,
+  doesFolderExist,
+} = require("../controllers/folder");
+const checkForErrors = require("../controllers/errors");
 
 const upload = multer({ dest: "public/uploads/" });
 
@@ -18,7 +24,29 @@ router.use(checkAuth);
 router.post("/file", upload.single("file"), uploadFile);
 
 // Create folder POST
-router.post("/folder", createFolder);
+router.post(
+  "/folder",
+  body("foldername")
+    .not()
+    .isEmpty()
+    .withMessage("Foldername cannot be empty")
+    .custom(async (value) => {
+      if (value === "") {
+        return Promise.resolve();
+      }
+      const exists = await checkIfFolderExists(value);
+      if (exists) {
+        return Promise.reject();
+      }
+      return Promise.resolve();
+    })
+    .withMessage("Folder already exists"),
+  checkForErrors,
+  createFolder
+);
+
+// Folder exists check
+router.get("/folder/exists", doesFolderExist);
 
 // Directory
 router.get("/files", renderFilesPage);

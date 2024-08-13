@@ -60,11 +60,11 @@
               <span></span>
             </div>            
           </div>
+          <p class="none"></p>
           <div class="dialogButtonContainer">
             <button class="actionBtn borderTransition" type="button" onclick="uploadFileSubmit()">Upload</button>
             <button class="actionBtn borderTransition" type="button" onclick="closeUploadFileModal()">Cancel</button>
           </div> 
-          <p class="none"></p>  
         </div>               
       </form>
       <%- include('./partials/loading') %>
@@ -75,13 +75,10 @@
           <h1>Create Folder</h1>
         </div>
         <div class="formInputContainer">
-          <input type="text" placeholder="Foldername" name="foldername" id="foldername" required/>
-          <% if (locals.fileError) { %>
-            <p><%= locals.fileError %></p>  
-          <% } %>
+          <input type="text" placeholder="Foldername" name="foldername" id="foldername"/>
           <p></p>
           <div class="dialogButtonContainer">
-            <button class="actionBtn borderTransition" onclick="showLoadingFileUpload()">Create</button>
+            <button class="actionBtn borderTransition" type="button" onclick="createFolderSubmit()">Create</button>
             <button class="actionBtn borderTransition" type="button" onclick="closeCreateFolderModal()">Cancel</button>
           </div> 
         </div>     

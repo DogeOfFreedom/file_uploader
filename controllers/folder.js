@@ -13,4 +13,28 @@ const createFolder = expressAsyncHandler(async (req, res) => {
   res.redirect("/files");
 });
 
-module.exports = { createFolder };
+const checkIfFolderExists = async (foldername) => {
+  const folder = await prisma.folder.findUnique({
+    where: { foldername },
+  });
+  if (folder) {
+    return true;
+  }
+  return false;
+};
+
+const doesFolderExist = async (req, res) => {
+  const { foldername } = req.query;
+  const exists = await checkIfFolderExists(foldername);
+  if (exists) {
+    res.json({
+      exists: true,
+    });
+  } else {
+    res.json({
+      exists: false,
+    });
+  }
+};
+
+module.exports = { createFolder, checkIfFolderExists, doesFolderExist };
