@@ -5,9 +5,13 @@ const prisma = new PrismaClient();
 
 const createFolder = expressAsyncHandler(async (req, res) => {
   const { foldername } = req.body;
+  const { folderId } = req.query;
+  const { id } = req.user;
   await prisma.folder.create({
     data: {
       foldername,
+      folder: folderId,
+      userId: id,
     },
   });
   res.redirect("/files");

@@ -9,11 +9,13 @@ const prisma = new PrismaClient();
 const uploadFile = expressAsyncHandler(async (req, res) => {
   const { originalname, size, path } = req.file;
   const { folder } = req.body;
+  const { id } = req.user;
+  const { folderId } = req.query;
 
   // Upload files to cloudinary
   const { url } = await cloudinary.uploader
     .upload(path, {
-      resource_type: "image",
+      resource_type: "auto",
     })
     .catch((e) => {
       console.log(e);
@@ -26,24 +28,16 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
         size,
         url,
         folderId: null,
+        userId: id,
       },
     });
   } else {
-    const existingFolder = await prisma.folder.findUnique({
-      where: {
-        foldername: folder,
-      },
-      select: {
-        id: true,
-      },
-    });
-    const { id } = existingFolder;
     await prisma.file.create({
       data: {
         filename: originalname,
         size,
         url,
-        folderId: id,
+        folderId,
       },
     });
   }
@@ -58,23 +52,52 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
   res.redirect("/files");
 });
 
+const getFilePath = async (folder) => {
+  const parentFolderId = folder.folder;
+  if (parentFolderId) {
+    const parentFolder = await prisma.folder.findUnique({
+      where: {
+        id: parentFolderId,
+      },
+    });
+    return `${await getFilePath(parentFolder)}/${folder.foldername}`;
+  }
+  return `/${folder.foldername}`;
+};
+
 const renderFilesPage = expressAsyncHandler(async (req, res) => {
   const { folderId } = req.query;
+  let dirpath = "Current Path: /root";
   let files = [];
+  let folders = [];
 
   if (folderId) {
     files = await prisma.file.findMany({
-      where: { folderId: Number(folderId) },
+      where: { folderId },
     });
-    res.render("files", { folders: [], files });
+    folders = await prisma.folder.findMany({
+      where: {
+        folder: folderId,
+      },
+    });
+    const currentFolder = await prisma.folder.findUnique({
+      where: { id: folderId },
+    });
+    dirpath += await getFilePath(currentFolder);
+    res.render("files", { folders, files, dirpath, currentFolder });
   } else {
+    // In root folder
     files = await prisma.file.findMany({
       where: {
         folderId: null,
       },
     });
-    const folders = await prisma.folder.findMany({});
-    res.render("files", { folders, files });
+    folders = await prisma.folder.findMany({
+      where: {
+        folder: null,
+      },
+    });
+    res.render("files", { folders, files, dirpath });
   }
 });
 
@@ -82,7 +105,7 @@ const renderSpecificFile = expressAsyncHandler(async (req, res) => {
   const { fileId } = req.query;
   const file = await prisma.file.findUnique({
     where: {
-      id: Number(fileId),
+      id: fileId,
     },
   });
   file.createdAt = new Date(file.createdAt).toDateString();
@@ -95,7 +118,7 @@ const downloadFile = expressAsyncHandler(async (req, res) => {
   // Get cloudinary url of file
   const { url } = await prisma.file.findUnique({
     where: {
-      id: Number(fileId),
+      id: fileId,
     },
   });
 
@@ -149,4 +172,5 @@ module.exports = {
   renderFilesPage,
   renderSpecificFile,
   downloadFile,
+  getFilePath,
 };

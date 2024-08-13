@@ -66,14 +66,18 @@ router.get("/logout", (req, res, next) => {
   });
 });
 
-router.get("/test", async (req, res) => {
-  await prisma.user.deleteMany({});
-  const users = await prisma.user.findMany({});
-  res.send(users);
-});
-
 if (process.env.ENV === "development") {
   router.get("/populate", populateDB);
+
+  router.get("/test", async (req, res) => {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: 1,
+      },
+    });
+    // console.log(folder);
+    res.send(folder);
+  });
 }
 
 module.exports = router;

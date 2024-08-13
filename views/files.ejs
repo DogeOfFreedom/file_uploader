@@ -36,6 +36,9 @@
               </a>  
             <% }) %> 
           <% } %>
+          <% if(locals.currentFolder) { %>
+           <%- include('./partials/backButton') %>
+          <% } %>
         </div>
         <div class="uploadContainer">
           <button type="button" onclick="openUploadFileModal()" class="borderTransition actionBtn">
@@ -44,11 +47,14 @@
           <button type="button" onclick="openCreateFolderModal()" class="borderTransition actionBtn">
             Create Folder <i class="fa-solid fa-folder-plus"></i>
           </button>
+          <div class="rhombus">
+            <span class="pageTitle"><%= locals.dirpath %></span>
+          </div>
         </div>
       </div>
     </div>
     <dialog id="uploadFileModal">
-      <form class="dialog-form" method="post" action="/file" enctype="multipart/form-data">
+      <form class="dialog-form" method="post" action="/file<% locals.currentFolder ? `?folderId=${locals.currentFolder.folder}` : ''%>" enctype="multipart/form-data">
         <div class="formHeader">
           <h1>Upload File</h1>
         </div>
@@ -70,7 +76,7 @@
       <%- include('./partials/loading') %>
     </dialog>
     <dialog id="createFolderModal">
-      <form class="dialog-form" method="post" action="/folder">
+      <form class="dialog-form" method="post" action="/folder<% locals.currentFolder ? `?folderId=${locals.currentFolder.folder}` : ''%>">
         <div class="formHeader">
           <h1>Create Folder</h1>
         </div>

@@ -156,7 +156,7 @@ button i {
     animation-timing-function: linear;
 }
 
-.homeBtn {
+.redBtn {
     border: var(--border) solid var(--red);
     height: var(--button-height);
     width: var(--button-height);
@@ -172,7 +172,7 @@ button i {
     }
 }
 
-header button:hover, .actionBtn:hover, .customFileUpload:hover {
+header button:hover, .actionBtn:hover, .customFileUpload:hover, .redBtn:hover {
     animation: colourTransitionBorder 1s linear infinite alternate, 
     pulse 0.9s cubic-bezier( 0.79, 0.18, 0.32, 0.83 ) infinite alternate;
     color: black;
@@ -205,13 +205,19 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover {
     --radius: calc(var(--medium) - var(--border));
 
     display: flex;
+    position: relative;
     gap: 200px;
-    /* justify-content: center; */
     align-content: flex-start;
     flex-wrap: wrap;
     padding: var(--medium);
     gap: var(--small);
     border-radius: var(--radius) var(--radius) 0px 0px;
+}
+
+.backBtn {
+    position: absolute;
+    bottom: 0%;
+    transform: translateY(-50%);
 }
 
 .itemLinkContainer {
