@@ -14,7 +14,7 @@ const createFolder = expressAsyncHandler(async (req, res) => {
       userId: id,
     },
   });
-  res.redirect("/files");
+  res.redirect(`/files?folderId=${folderId}`);
 });
 
 const checkIfFolderExists = async (foldername) => {
