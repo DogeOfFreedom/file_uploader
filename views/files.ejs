@@ -54,7 +54,7 @@
       </div>
     </div>
     <dialog id="uploadFileModal">
-      <form class="dialog-form" method="post" action="/file<% locals.currentFolder ? `?folderId=${locals.currentFolder.folder}` : ''%>" enctype="multipart/form-data">
+      <form class="dialog-form" method="post" action="/file<%= locals.currentFolder ? `?folderId=${locals.currentFolder.id}` : '?folderId=null'%>" enctype="multipart/form-data">
         <div class="formHeader">
           <h1>Upload File</h1>
         </div>
@@ -76,7 +76,7 @@
       <%- include('./partials/loading') %>
     </dialog>
     <dialog id="createFolderModal">
-      <form class="dialog-form" method="post" action="/folder<% locals.currentFolder ? `?folderId=${locals.currentFolder.folder}` : ''%>">
+      <form class="dialog-form" method="post" action="/folder<%= locals.currentFolder ? `?folderId=${locals.currentFolder.id}` : '?folderId=null'%>">
         <div class="formHeader">
           <h1>Create Folder</h1>
         </div>

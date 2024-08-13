@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 
 const uploadFile = expressAsyncHandler(async (req, res) => {
   const { originalname, size, path } = req.file;
-  const { folder } = req.body;
   const { id } = req.user;
   const { folderId } = req.query;
 
@@ -21,7 +20,7 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
       console.log(e);
     });
 
-  if (!folder) {
+  if (!folderId) {
     await prisma.file.create({
       data: {
         filename: originalname,
@@ -38,6 +37,7 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
         size,
         url,
         folderId,
+        userId: id,
       },
     });
   }
