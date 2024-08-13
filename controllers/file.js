@@ -49,7 +49,7 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
     }
   });
 
-  res.redirect("/files");
+  res.redirect(`/files?folderId=${folderId}`);
 });
 
 const getFilePath = async (folder) => {
