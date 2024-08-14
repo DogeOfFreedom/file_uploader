@@ -93,22 +93,7 @@ const createRootFiles = async () => {
       size: 123213,
       folderId: null,
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
-    },
-  });
-  await prisma.file.create({
-    data: {
-      filename: "R file 2",
-      size: 123213,
-      folderId: null,
-      url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
-    },
-  });
-  await prisma.file.create({
-    data: {
-      filename: "R file 3",
-      size: 123213,
-      folderId: null,
-      url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
+      userId: "1",
     },
   });
 };
@@ -197,7 +182,7 @@ const populateFilesAndFolder = async () => {
 
   // await createFolder1Files();
   // await createFolder2Files();
-  // await createRootFiles();
+  await createRootFiles();
 };
 
 const populateDB = async (req, res) => {

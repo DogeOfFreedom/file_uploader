@@ -279,6 +279,11 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:
     transform: translate(var(--medium), -50%);
 }
 
+.fileBackBtn {
+    position: absolute;
+    left: var(--medium);
+}
+
 .card {
     width: 40%;
     gap: 10px;
@@ -293,10 +298,6 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:
     position: relative;
 }
 
-.card a {
-    margin-top: 20px;
-}
-
 .card img {
     --radius: calc(var(--big) - var(--medium));
     
@@ -309,7 +310,9 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:
 }
 
 .fileButtons {
+    margin-top: 20px;
     display: flex;
+    align-items: center;
     gap: var(--medium);
 }
 
