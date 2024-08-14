@@ -35,9 +35,9 @@ model File {
   createdAt DateTime @default(now())
   size      Int
   url       String
-  folder    Folder?  @relation(fields: [folderId], references: [id]) // Defines relationship with folder
+  folder    Folder?  @relation(fields: [folderId], references: [id], onDelete: Cascade) // Defines relationship with folder
   folderId  String? // FK
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
 }
 
@@ -46,8 +46,8 @@ model Folder {
   foldername   String   @unique
   files        File[] // Defines relationship with File
   folder       String? // FK for parent folder
-  parentFolder Folder?  @relation("ParentFolder", fields: [folder], references: [id])
+  parentFolder Folder?  @relation("ParentFolder", fields: [folder], references: [id], onDelete: Cascade)
   childFolder  Folder[] @relation("ParentFolder")
-  user         User     @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
 }

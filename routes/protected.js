@@ -7,11 +7,13 @@ const {
   renderFilesPage,
   renderSpecificFile,
   downloadFile,
+  deleteFile,
 } = require("../controllers/file");
 const {
   createFolder,
   checkIfFolderExists,
   doesFolderExist,
+  deleteFolder,
 } = require("../controllers/folder");
 const checkForErrors = require("../controllers/errors");
 
@@ -27,6 +29,7 @@ router.post("/file", upload.single("file"), uploadFile);
 router.post(
   "/folder",
   body("foldername")
+    .trim()
     .not()
     .isEmpty()
     .withMessage("Foldername cannot be empty")
@@ -56,5 +59,11 @@ router.get("/files/file", renderSpecificFile);
 
 // Download File
 router.get("/files/file/download", downloadFile);
+
+// Delete File
+router.post("/file/delete", deleteFile);
+
+// Delete Folder
+router.post("/folder/delete", deleteFolder);
 
 module.exports = router;

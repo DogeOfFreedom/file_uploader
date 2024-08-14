@@ -14,10 +14,14 @@ const createFolder = expressAsyncHandler(async (req, res) => {
       userId: id,
     },
   });
-  res.redirect(`/files?folderId=${folderId}`);
+  if (!folderId) {
+    res.redirect(`/files`);
+  } else {
+    res.redirect(`/files?folderId=${folderId}`);
+  }
 });
 
-const checkIfFolderExists = async (foldername) => {
+const checkIfFolderExists = expressAsyncHandler(async (foldername) => {
   const folder = await prisma.folder.findUnique({
     where: { foldername },
   });
@@ -25,9 +29,9 @@ const checkIfFolderExists = async (foldername) => {
     return true;
   }
   return false;
-};
+});
 
-const doesFolderExist = async (req, res) => {
+const doesFolderExist = expressAsyncHandler(async (req, res) => {
   const { foldername } = req.query;
   const exists = await checkIfFolderExists(foldername);
   if (exists) {
@@ -39,6 +43,25 @@ const doesFolderExist = async (req, res) => {
       exists: false,
     });
   }
-};
+});
 
-module.exports = { createFolder, checkIfFolderExists, doesFolderExist };
+const deleteFolder = expressAsyncHandler(async (req, res) => {
+  const { folderId, prevFolder } = req.query;
+  await prisma.folder.delete({
+    where: {
+      id: folderId,
+    },
+  });
+  if (prevFolder !== "null") {
+    res.redirect(`/files?folderId=${prevFolder}`);
+  } else {
+    res.redirect("/files");
+  }
+});
+
+module.exports = {
+  createFolder,
+  checkIfFolderExists,
+  doesFolderExist,
+  deleteFolder,
+};

@@ -20,6 +20,13 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
       console.log(e);
     });
 
+  // remove file once uploaded
+  fs.unlink(path, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+
   if (!folderId) {
     await prisma.file.create({
       data: {
@@ -30,6 +37,7 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
         userId: id,
       },
     });
+    res.redirect("/files");
   } else {
     await prisma.file.create({
       data: {
@@ -40,19 +48,11 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
         userId: id,
       },
     });
+    res.redirect(`/files?folderId=${folderId}`);
   }
-
-  // remove file once uploaded
-  fs.unlink(path, (err) => {
-    if (err) {
-      console.log(err);
-    }
-  });
-
-  res.redirect(`/files?folderId=${folderId}`);
 });
 
-const getFilePath = async (folder) => {
+const getFilePath = expressAsyncHandler(async (folder) => {
   const parentFolderId = folder.folder;
   if (parentFolderId) {
     const parentFolder = await prisma.folder.findUnique({
@@ -63,25 +63,27 @@ const getFilePath = async (folder) => {
     return `${await getFilePath(parentFolder)}/${folder.foldername}`;
   }
   return `/${folder.foldername}`;
-};
+});
 
 const renderFilesPage = expressAsyncHandler(async (req, res) => {
   const { folderId } = req.query;
+  const userId = String(req.user.id);
   let dirpath = "Current Path: /root";
   let files = [];
   let folders = [];
 
   if (folderId) {
     files = await prisma.file.findMany({
-      where: { folderId },
+      where: { folderId, userId },
     });
     folders = await prisma.folder.findMany({
       where: {
         folder: folderId,
+        userId,
       },
     });
     const currentFolder = await prisma.folder.findUnique({
-      where: { id: folderId },
+      where: { id: folderId, userId },
     });
     dirpath += await getFilePath(currentFolder);
     res.render("files", { folders, files, dirpath, currentFolder });
@@ -90,11 +92,13 @@ const renderFilesPage = expressAsyncHandler(async (req, res) => {
     files = await prisma.file.findMany({
       where: {
         folderId: null,
+        userId,
       },
     });
     folders = await prisma.folder.findMany({
       where: {
         folder: null,
+        userId,
       },
     });
     res.render("files", { folders, files, dirpath });
@@ -167,10 +171,21 @@ const downloadFile = expressAsyncHandler(async (req, res) => {
   // });
 });
 
+const deleteFile = expressAsyncHandler(async (req, res) => {
+  const { fileId, folderId } = req.query;
+  await prisma.file.delete({
+    where: {
+      id: fileId,
+    },
+  });
+  res.redirect(`/files?folderId=${folderId}`);
+});
+
 module.exports = {
   uploadFile,
   renderFilesPage,
   renderSpecificFile,
   downloadFile,
   getFilePath,
+  deleteFile,
 };

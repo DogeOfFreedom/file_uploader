@@ -27,9 +27,18 @@
           <span class="infoTitle">Creation Date</span>
           <span class="infoData"><%= locals.file.createdAt %></span>
         </div>
-        <a href="/files/file/download?fileId=<%= locals.file.id %>">
-          <button class="borderTransition actionBtn">Download</button>
-        </a>
+        <div class="fileButtons">
+          <a
+            tabindex="-1"
+            href="/files<%=`?folderId=${locals.file.folderId}`%>"
+            class="fileBackBtn"
+          >
+            <%- include('./partials/backButton') %>
+          </a>
+          <a href="/files/file/download?fileId=<%= locals.file.id %>">
+            <button class="borderTransition actionBtn">Download</button>
+          </a>
+        </div>
       </div>
     </div>
   </body>

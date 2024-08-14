@@ -73,6 +73,16 @@ const createFolderSubmit = async () => {
   }
 };
 
+const openDeleteFolderModal = () => {
+  const modal = document.querySelector("#deleteFolderModal");
+  modal.showModal();
+};
+
+const closeDeleteFolderModal = () => {
+  const modal = document.querySelector("#deleteFolderModal");
+  modal.close();
+};
+
 const loadingElements = document.querySelectorAll("loadingContainer");
 loadingElements.forEach((loading) => loading.classList.add("hidden"));
 
