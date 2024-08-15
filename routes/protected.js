@@ -10,6 +10,7 @@ const {
   deleteFile,
   updateFile,
   doesFileExist,
+  checkIfFileExists,
 } = require("../controllers/file");
 const {
   createFolder,
@@ -36,11 +37,12 @@ router.post(
     .not()
     .isEmpty()
     .withMessage("Foldername cannot be empty")
-    .custom(async (value) => {
+    .custom(async (value, { req }) => {
       if (value === "") {
         return Promise.resolve();
       }
-      const exists = await checkIfFolderExists(value);
+      const { folderId } = req.query;
+      const exists = await checkIfFolderExists(value, folderId);
       if (exists) {
         return Promise.reject();
       }
@@ -52,7 +54,7 @@ router.post(
 );
 
 // Folder exists check
-router.get("/folder/exists", doesFolderExist);
+router.post("/folder/exists", doesFolderExist);
 
 // Directory
 router.get("/files", renderFilesPage);
@@ -86,7 +88,7 @@ router.post("/file/exists", doesFileExist);
 
 // Update Folder
 router.post(
-  "folder/update",
+  "/folder/update",
   body("foldername")
     .trim()
     .not()

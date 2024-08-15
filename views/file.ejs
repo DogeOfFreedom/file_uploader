@@ -17,8 +17,12 @@
       <div class="card">
         <img src="<%=locals.file.url%>" alt="preview_img" />
         <div class="infoSegment">
-          <span class="infoTitle">Filename</span>
+          <span class="infoTitle">File Name</span>
           <span class="infoData"><%= locals.file.filename %></span>
+        </div>
+        <div class="infoSegment">
+          <span class="infoTitle">File Type</span>
+          <span class="infoData"><%= locals.file.type %></span>
         </div>
         <div class="infoSegment">
           <span class="infoTitle">Size</span>
@@ -81,7 +85,7 @@
             <button
               class="actionBtn borderTransition"
               type="button"
-              onclick="updateFileSubmit()"
+              onclick="updateFileSubmit('<%= locals.file.folder %>', '<%= locals.file.type %>')"
             >
               Update
             </button>

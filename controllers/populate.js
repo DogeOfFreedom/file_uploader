@@ -38,6 +38,7 @@ const createFolder1Files = async () => {
       folderId: "1",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
       userId: "1",
+      type: "jpg",
     },
   });
   await prisma.file.create({
@@ -47,6 +48,7 @@ const createFolder1Files = async () => {
       folderId: "1",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
       userId: "1",
+      type: "jpg",
     },
   });
   await prisma.file.create({
@@ -56,6 +58,7 @@ const createFolder1Files = async () => {
       folderId: "1",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
       userId: "1",
+      type: "jpg",
     },
   });
 };
@@ -69,6 +72,7 @@ const createFolder2Files = async () => {
       folderId: "2",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
       userId: "1",
+      type: "jpg",
     },
   });
   await prisma.file.create({
@@ -78,6 +82,7 @@ const createFolder2Files = async () => {
       folderId: "2",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
       userId: "1",
+      type: "jpg",
     },
   });
   await prisma.file.create({
@@ -87,6 +92,7 @@ const createFolder2Files = async () => {
       folderId: "2",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
       userId: "1",
+      type: "jpg",
     },
   });
 };
@@ -100,6 +106,7 @@ const createRootFiles = async () => {
       folderId: null,
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
       userId: "1",
+      type: "jpg",
     },
   });
 };

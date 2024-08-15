@@ -18,15 +18,15 @@ const closeUpdateFileModal = () => {
   modal.close();
 };
 
-const updateFileSubmit = async () => {
+const updateFileSubmit = async (folderId, type) => {
   const form = document.querySelector("#updateFileModal form");
   const { value } = document.querySelector("#updateFileModal form input");
   const error = document.querySelector("#updateFileModal p");
 
   if (value.length >= 1) {
-    // Does file already exist?ythijoijoij
+    // Does file already exist?
     const { exists } = await fetch(
-      `http://localhost:3000/file/exists?filename=${value}`,
+      `http://localhost:3000/file/exists?filename=${value}&folderId=${folderId}&type=${type}`,
       {
         method: "post",
       }

@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 const { PrismaClient } = require("@prisma/client");
 const expressAsyncHandler = require("express-async-handler");
 const cloudinary = require("cloudinary").v2;
@@ -10,6 +11,22 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
   const { originalname, size, path } = req.file;
   const { id } = req.user;
   const { folderId } = req.query;
+  let { filename } = req.body;
+  const fileExtensionSeperatorIndex = originalname.lastIndexOf(".");
+  const type = originalname.substr(fileExtensionSeperatorIndex + 1); // +1 to remove the '.'
+
+  // User did not enter custom file name
+  if (!filename) {
+    filename = originalname.substr(0, fileExtensionSeperatorIndex);
+  }
+
+  // Does the file already exist?
+  const exists = await checkIfFileExists(filename, folderId, type);
+  if (exists) {
+    return res.json({
+      message: "filename already taken",
+    });
+  }
 
   // Upload files to cloudinary
   const { url } = await cloudinary.uploader
@@ -27,27 +44,22 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
     }
   });
 
+  // Add file to database
+  await prisma.file.create({
+    data: {
+      filename,
+      type,
+      size,
+      url,
+      folderId,
+      userId: id,
+    },
+  });
+
+  // Redirect
   if (!folderId) {
-    await prisma.file.create({
-      data: {
-        filename: originalname,
-        size,
-        url,
-        folderId: null,
-        userId: id,
-      },
-    });
     res.redirect("/files");
   } else {
-    await prisma.file.create({
-      data: {
-        filename: originalname,
-        size,
-        url,
-        folderId,
-        userId: id,
-      },
-    });
     res.redirect(`/files?folderId=${folderId}`);
   }
 });
@@ -195,14 +207,23 @@ const updateFile = expressAsyncHandler(async (req, res) => {
   res.redirect(`/files/file?fileId=${fileId}`);
 });
 
+const checkIfFileExists = expressAsyncHandler(
+  async (filename, folderId, type) => {
+    const id = folderId === "" ? null : folderId;
+    const file = await prisma.file.findFirst({
+      where: { filename, folder: id, type },
+    });
+    if (file) {
+      return true;
+    }
+    return false;
+  }
+);
+
 const doesFileExist = expressAsyncHandler(async (req, res) => {
-  const { filename } = req.query;
-  const file = await prisma.file.findFirst({
-    where: {
-      filename,
-    },
-  });
-  if (file) {
+  const { filename, folderId, type } = req.query;
+  const exists = await checkIfFileExists(filename, folderId, type);
+  if (exists) {
     res.json({
       exists: true,
     });
@@ -221,5 +242,6 @@ module.exports = {
   getFilePath,
   deleteFile,
   updateFile,
+  checkIfFileExists,
   doesFileExist,
 };

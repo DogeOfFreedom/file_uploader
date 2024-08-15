@@ -31,7 +31,7 @@
               <a class="itemLinkContainer" href="/files/file?fileId=<%=file.id%>">
                 <div class="directoryItem">
                   <i class="directoryIcon fa-solid fa-file"></i>
-                  <p><%= file.filename %></p>
+                  <p><%= file.filename %>.<%=file.type%></p>
                 </div>  
               </a>  
             <% }) %> 
@@ -80,9 +80,10 @@
               <span></span>
             </div>            
           </div>
+          <input type="text" placeholder="Filename (optional)" name="filename" id="filename"/>
           <p class="none"></p>
           <div class="dialogButtonContainer">
-            <button class="actionBtn borderTransition" type="button" onclick="uploadFileSubmit()">Upload</button>
+            <button class="actionBtn borderTransition" type="button" onclick="uploadFileSubmit('<%= locals.currentFolder ? locals.currentFolder.id : null %>')">Upload</button>
             <button class="actionBtn borderTransition" type="button" onclick="closeUploadFileModal()">Cancel</button>
           </div> 
         </div>               
@@ -98,27 +99,45 @@
           <input type="text" placeholder="Foldername" name="foldername" id="foldername"/>
           <p></p>
           <div class="dialogButtonContainer">
-            <button class="actionBtn borderTransition" type="button" onclick="createFolderSubmit()">Create</button>
+            <button class="actionBtn borderTransition" type="button" onclick="createFolderSubmit('<%= locals.currentFolder ? locals.currentFolder.id : null %>')">Create</button>
             <button class="actionBtn borderTransition" type="button" onclick="closeCreateFolderModal()">Cancel</button>
           </div> 
         </div>     
       </form>
       <%- include('./partials/loading') %>
     </dialog>
-    <dialog id="deleteFolderModal">
-      <form class="dialog-form" method="post" action="<%= locals.currentFolder ? '/folder/delete?folderId=' + locals.currentFolder.id + '&prevFolder=' + locals.currentFolder.folder : '' %>">
-        <div class="formHeader">
-          <h1>Are you sure?</h1>
-        </div>
-        <div class="formInputContainer">
-          <p>Deleting this folder will delete all of its contents</p>
-          <div class="dialogButtonContainer">
-            <button class="redBtn actionBtn borderTransition" type="submit">Delete</button>
-            <button class="actionBtn borderTransition" type="button" onclick="closeDeleteFolderModal()">Cancel</button>
-          </div> 
-        </div>     
-      </form>
-      <%- include('./partials/loading') %>
-    </dialog>
+    <% if(locals.currentFolder) { %>
+      <dialog id="updateFolderModal">
+        <form class="dialog-form" method="post" action="/folder/update?folderId=<%= locals.currentFolder.id %>">
+          <div class="formHeader">
+            <h1>Update Folder Name</h1>
+          </div>
+          <div class="formInputContainer">
+            <input type="text" placeholder="Foldername" name="foldername" value="<%= locals.currentFolder.foldername %>" id="foldername"/>
+            <p class="none"></p>
+            <div class="dialogButtonContainer">
+              <button class="actionBtn borderTransition" type="button" onclick="updateFolderSubmit('<%= locals.currentFolder.folder %>')">Create</button>
+              <button class="actionBtn borderTransition" type="button" onclick="closeUpdateFolderModal()">Cancel</button>
+            </div> 
+          </div>     
+        </form>
+        <%- include('./partials/loading') %>
+      </dialog>
+      <dialog id="deleteFolderModal">
+        <form class="dialog-form" method="post" action="<%= locals.currentFolder ? '/folder/delete?folderId=' + locals.currentFolder.id + '&prevFolder=' + locals.currentFolder.folder : '' %>">
+          <div class="formHeader">
+            <h1>Are you sure?</h1>
+          </div>
+          <div class="formInputContainer">
+            <p>Deleting this folder will delete all of its contents</p>
+            <div class="dialogButtonContainer">
+              <button class="redBtn actionBtn borderTransition" type="submit">Delete</button>
+              <button class="actionBtn borderTransition" type="button" onclick="closeDeleteFolderModal()">Cancel</button>
+            </div> 
+          </div>     
+        </form>
+        <%- include('./partials/loading') %>
+      </dialog>
+    <% } %>
   </body>
 </html>

@@ -32,6 +32,7 @@ model User {
 model File {
   id        String   @id @default(uuid())
   filename  String
+  type      String
   createdAt DateTime @default(now())
   size      Int
   url       String
@@ -45,7 +46,7 @@ model File {
 
 model Folder {
   id           String   @id @default(uuid())
-  foldername   String   @unique
+  foldername   String
   files        File[] // Defines relationship with File
   folder       String? // FK for parent folder
   parentFolder Folder?  @relation("ParentFolder", fields: [folder], references: [id], onDelete: Cascade)
