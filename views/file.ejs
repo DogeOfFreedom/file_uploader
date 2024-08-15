@@ -31,7 +31,7 @@
         <div class="fileButtons">
           <a
             tabindex="-1"
-            href="/files<%=`?folderId=${locals.file.folderId}`%>"
+            href="/files<%= locals.file.folderId === null ? '' : '?folderId=' + locals.file.folderId %>"
             class="fileBackBtn"
           >
             <%- include('./partials/backButton') %>
@@ -64,31 +64,31 @@
       <form
         class="dialog-form"
         method="post"
-        action="/folder<%= locals.currentFolder ? `?folderId=${locals.currentFolder.id}` : ''%>"
+        action="/file/update?fileId=<%= locals.file.id %>"
       >
         <div class="formHeader">
-          <h1>Create Folder</h1>
+          <h1>Update Filename</h1>
         </div>
         <div class="formInputContainer">
           <input
             type="text"
-            placeholder="Foldername"
-            name="foldername"
-            id="foldername"
+            value="<%= locals.file.filename %>"
+            name="filename"
+            id="filename"
           />
-          <p></p>
+          <p class="none"></p>
           <div class="dialogButtonContainer">
             <button
               class="actionBtn borderTransition"
               type="button"
-              onclick="createFolderSubmit()"
+              onclick="updateFileSubmit()"
             >
-              Create
+              Update
             </button>
             <button
               class="actionBtn borderTransition"
               type="button"
-              onclick="closeCreateFolderModal()"
+              onclick="closeUpdateFileModal()"
             >
               Cancel
             </button>
@@ -115,7 +115,7 @@
             <button
               class="actionBtn borderTransition"
               type="button"
-              onclick="closeDeleteFolderModal()"
+              onclick="closeDeleteFileModal()"
             >
               Cancel
             </button>

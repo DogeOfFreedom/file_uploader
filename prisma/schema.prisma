@@ -39,6 +39,8 @@ model File {
   folderId  String? // FK
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
+
+  @@unique([filename, folderId])
 }
 
 model Folder {
@@ -50,4 +52,6 @@ model Folder {
   childFolder  Folder[] @relation("ParentFolder")
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
+
+  @@unique([foldername, folder])
 }

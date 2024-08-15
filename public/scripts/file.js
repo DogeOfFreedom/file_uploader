@@ -17,3 +17,35 @@ const closeUpdateFileModal = () => {
   const modal = document.querySelector("#updateFileModal");
   modal.close();
 };
+
+const updateFileSubmit = async () => {
+  const form = document.querySelector("#updateFileModal form");
+  const { value } = document.querySelector("#updateFileModal form input");
+  const error = document.querySelector("#updateFileModal p");
+
+  if (value.length >= 1) {
+    // Does file already exist?ythijoijoij
+    const { exists } = await fetch(
+      `http://localhost:3000/file/exists?filename=${value}`,
+      {
+        method: "post",
+      }
+    )
+      .then((res) => res.json())
+      .catch((e) => console.log(e));
+    if (exists) {
+      error.classList.remove("none");
+      error.textContent = "Filename taken";
+    } else {
+      form.submit();
+      const loading = document.querySelector(
+        "#updateFileModal .loadingContainer"
+      );
+      document.querySelector("#updateFileModal form").classList.add("hidden");
+      loading.classList.remove("hidden");
+    }
+  } else {
+    error.classList.remove("none");
+    error.textContent = "Folder Name cannot be empty";
+  }
+};

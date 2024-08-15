@@ -8,12 +8,15 @@ const {
   renderSpecificFile,
   downloadFile,
   deleteFile,
+  updateFile,
+  doesFileExist,
 } = require("../controllers/file");
 const {
   createFolder,
   checkIfFolderExists,
   doesFolderExist,
   deleteFolder,
+  updateFolder,
 } = require("../controllers/folder");
 const checkForErrors = require("../controllers/errors");
 
@@ -65,5 +68,32 @@ router.post("/file/delete", deleteFile);
 
 // Delete Folder
 router.post("/folder/delete", deleteFolder);
+
+// Update File
+router.post(
+  "/file/update",
+  body("filename")
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage("Filename cannot be empty"),
+  checkForErrors,
+  updateFile
+);
+
+// Check if file name already exists
+router.post("/file/exists", doesFileExist);
+
+// Update Folder
+router.post(
+  "folder/update",
+  body("foldername")
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage("Foldername cannot be empty"),
+  checkForErrors,
+  updateFolder
+);
 
 module.exports = router;

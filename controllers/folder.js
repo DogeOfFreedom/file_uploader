@@ -59,9 +59,24 @@ const deleteFolder = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const updateFolder = expressAsyncHandler(async (req, res) => {
+  const { foldername } = req.body;
+  const { folderId } = req.query;
+  await prisma.folder.update({
+    where: {
+      id: folderId,
+    },
+    data: {
+      foldername,
+    },
+  });
+  res.redirect(`/folder?folderId=${folderId}`);
+});
+
 module.exports = {
   createFolder,
   checkIfFolderExists,
   doesFolderExist,
   deleteFolder,
+  updateFolder,
 };

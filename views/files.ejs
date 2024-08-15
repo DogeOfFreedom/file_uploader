@@ -54,6 +54,9 @@
             Create Folder <i class="fa-solid fa-folder-plus"></i>
           </button>
           <% if(locals.currentFolder) { %>
+            <button class="actionBtn" type="button" onclick="openUpdateFolderModal()" class="borderTransition actionBtn">
+              Update Folder <i class="fa-solid fa-pen"></i>
+            </button>
             <button class="actionBtn redBtn" type="button" onclick="openDeleteFolderModal()" class="borderTransition actionBtn">
               Delete Folder <i class="fa-solid fa-trash"></i>
             </button>

@@ -181,6 +181,38 @@ const deleteFile = expressAsyncHandler(async (req, res) => {
   res.redirect(`/files?folderId=${folderId}`);
 });
 
+const updateFile = expressAsyncHandler(async (req, res) => {
+  const { filename } = req.body;
+  const { fileId } = req.query;
+  await prisma.file.update({
+    where: {
+      id: fileId,
+    },
+    data: {
+      filename,
+    },
+  });
+  res.redirect(`/files/file?fileId=${fileId}`);
+});
+
+const doesFileExist = expressAsyncHandler(async (req, res) => {
+  const { filename } = req.query;
+  const file = await prisma.file.findFirst({
+    where: {
+      filename,
+    },
+  });
+  if (file) {
+    res.json({
+      exists: true,
+    });
+  } else {
+    res.json({
+      exists: false,
+    });
+  }
+});
+
 module.exports = {
   uploadFile,
   renderFilesPage,
@@ -188,4 +220,6 @@ module.exports = {
   downloadFile,
   getFilePath,
   deleteFile,
+  updateFile,
+  doesFileExist,
 };

@@ -35,24 +35,27 @@ const createFolder1Files = async () => {
     data: {
       filename: "file 1",
       size: 123213,
-      folderId: 1,
+      folderId: "1",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
+      userId: "1",
     },
   });
   await prisma.file.create({
     data: {
       filename: "file 2",
       size: 123213,
-      folderId: 1,
+      folderId: "1",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
+      userId: "1",
     },
   });
   await prisma.file.create({
     data: {
       filename: "file 3",
       size: 123213,
-      folderId: 1,
+      folderId: "1",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
+      userId: "1",
     },
   });
 };
@@ -61,26 +64,29 @@ const createFolder2Files = async () => {
   // Folder 2 Files
   await prisma.file.create({
     data: {
-      filename: "afile 1",
+      filename: "file 1",
       size: 123213,
-      folderId: 2,
+      folderId: "2",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
+      userId: "1",
     },
   });
   await prisma.file.create({
     data: {
-      filename: "bfile 2",
+      filename: "file 2",
       size: 123213,
-      folderId: 2,
+      folderId: "2",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
+      userId: "1",
     },
   });
   await prisma.file.create({
     data: {
-      filename: "cfile 3",
+      filename: "file 3",
       size: 123213,
-      folderId: 2,
+      folderId: "2",
       url: "https://res.cloudinary.com/dhtsrj5lb/image/upload/v1723013609/rchxnwp8isficsghgqvr.jpg",
+      userId: "1",
     },
   });
 };
@@ -180,8 +186,8 @@ const populateFilesAndFolder = async () => {
   await createUser1Folders();
   await createUser2Folders();
 
-  // await createFolder1Files();
-  // await createFolder2Files();
+  await createFolder1Files();
+  await createFolder2Files();
   await createRootFiles();
 };
 
