@@ -10,7 +10,6 @@ const {
   deleteFile,
   updateFile,
   doesFileExist,
-  checkIfFileExists,
 } = require("../controllers/file");
 const {
   createFolder,

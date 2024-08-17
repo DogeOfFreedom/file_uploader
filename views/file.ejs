@@ -12,121 +12,133 @@
     <title>File Uploader</title>
   </head>
   <body>
-    <%- include("./partials/header") %>
-    <div class="contentContainer">
-      <div class="card">
-        <img src="<%=locals.file.url%>" alt="preview_img" />
-        <div class="infoSegment">
-          <span class="infoTitle">File Name</span>
-          <span class="infoData"><%= locals.file.filename %></span>
-        </div>
-        <div class="infoSegment">
-          <span class="infoTitle">File Type</span>
-          <span class="infoData"><%= locals.file.type %></span>
-        </div>
-        <div class="infoSegment">
-          <span class="infoTitle">Size</span>
-          <span class="infoData"><%= locals.file.size %></span>
-        </div>
-        <div class="infoSegment">
-          <span class="infoTitle">Creation Date</span>
-          <span class="infoData"><%= locals.file.createdAt %></span>
-        </div>
-        <div class="fileButtons">
-          <a
-            tabindex="-1"
-            href="/files<%= locals.file.folderId === null ? '' : '?folderId=' + locals.file.folderId %>"
-            class="fileBackBtn"
-          >
-            <%- include('./partials/backButton') %>
-          </a>
-          <a href="/files/file/download?fileId=<%= locals.file.id %>">
-            <button class="borderTransition actionBtn">
-              Download <i class="fa-solid fa-download"></i>
+    <%- include('./partials/header') %> <%- include('./partials/animatedBG') %>
+    <div class="main">
+      <div class="contentContainer">
+        <div class="card">
+          <% if(["jpg", "jpeg", "png", "gif", "webp"].includes(locals.file.type)) { %>
+            <img src="<%=locals.file.url%>" alt="preview_img" />
+          <% } else { %>
+            <div class="previewIconContainer">
+              <i class="fa-solid fa-file"></i>
+              <span>No Preview Available</span>
+            </div>
+          <% } %>
+          <div class="infoSegment">
+            <span class="infoTitle">File Name</span>
+            <span class="infoData"><%= locals.file.filename %></span>
+          </div>
+          <div class="infoSegment">
+            <span class="infoTitle">File Type</span>
+            <span class="infoData"><%= locals.file.type %></span>
+          </div>
+          <div class="infoSegment">
+            <span class="infoTitle">Size</span>
+            <span class="infoData"><%= locals.file.size %> bytes</span>
+          </div>
+          <div class="infoSegment">
+            <span class="infoTitle">Creation Date</span>
+            <span class="infoData"><%= locals.file.createdAt %></span>
+          </div>
+          <div class="fileButtons">
+            <a
+              tabindex="-1"
+              href="/files<%= locals.file.folderId === null ? '' : '?folderId=' + locals.file.folderId %>"
+              class="fileBackBtn"
+            >
+              <%- include('./partials/backButton') %>
+            </a>
+            <a
+              tabindex="-1"
+              href="/files/file/download?fileId=<%= locals.file.id %>"
+            >
+              <button class="borderTransition actionBtn">
+                Download <i class="fa-solid fa-download"></i>
+              </button>
+            </a>
+            <button
+              class="actionBtn"
+              type="button"
+              onclick="openUpdateFileModal()"
+              class="borderTransition actionBtn"
+            >
+              Update <i class="fa-solid fa-pen"></i>
             </button>
-          </a>
-          <button
-            class="actionBtn"
-            type="button"
-            onclick="openUpdateFileModal()"
-            class="borderTransition actionBtn"
-          >
-            Update <i class="fa-solid fa-pen"></i>
-          </button>
-          <button
-            class="actionBtn redBtn"
-            type="button"
-            onclick="openDeleteFileModal()"
-            class="borderTransition actionBtn"
-          >
-            Delete <i class="fa-solid fa-trash"></i>
-          </button>
+            <button
+              class="actionBtn redBtn"
+              type="button"
+              onclick="openDeleteFileModal()"
+              class="borderTransition actionBtn"
+            >
+              Delete <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
         </div>
       </div>
+      <dialog id="updateFileModal">
+        <form
+          class="dialog-form"
+          method="post"
+          action="/file/update?fileId=<%= locals.file.id %>"
+        >
+          <div class="formHeader">
+            <h1>Update Filename</h1>
+          </div>
+          <div class="formInputContainer">
+            <input
+              type="text"
+              value="<%= locals.file.filename %>"
+              name="filename"
+              id="filename"
+            />
+            <p class="none"></p>
+            <div class="dialogButtonContainer">
+              <button
+                class="actionBtn borderTransition"
+                type="button"
+                onclick="updateFileSubmit('<%= locals.file.folder %>', '<%= locals.file.type %>')"
+              >
+                Update
+              </button>
+              <button
+                class="actionBtn borderTransition"
+                type="button"
+                onclick="closeUpdateFileModal()"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+        <%- include('./partials/loading') %>
+      </dialog>
+      <dialog id="deleteFileModal">
+        <form
+          class="dialog-form"
+          method="post"
+          action="/file/delete?fileId=<%= locals.file.id %>&folderId=<%= locals.file.folderId %>"
+        >
+          <div class="formHeader">
+            <h1>Are you sure?</h1>
+          </div>
+          <div class="formInputContainer">
+            <p>This action cannot be undone</p>
+            <div class="dialogButtonContainer">
+              <button class="redBtn actionBtn borderTransition" type="submit">
+                Delete
+              </button>
+              <button
+                class="actionBtn borderTransition"
+                type="button"
+                onclick="closeDeleteFileModal()"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+        <%- include('./partials/loading') %>
+      </dialog>
     </div>
-    <dialog id="updateFileModal">
-      <form
-        class="dialog-form"
-        method="post"
-        action="/file/update?fileId=<%= locals.file.id %>"
-      >
-        <div class="formHeader">
-          <h1>Update Filename</h1>
-        </div>
-        <div class="formInputContainer">
-          <input
-            type="text"
-            value="<%= locals.file.filename %>"
-            name="filename"
-            id="filename"
-          />
-          <p class="none"></p>
-          <div class="dialogButtonContainer">
-            <button
-              class="actionBtn borderTransition"
-              type="button"
-              onclick="updateFileSubmit('<%= locals.file.folder %>', '<%= locals.file.type %>')"
-            >
-              Update
-            </button>
-            <button
-              class="actionBtn borderTransition"
-              type="button"
-              onclick="closeUpdateFileModal()"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </form>
-      <%- include('./partials/loading') %>
-    </dialog>
-    <dialog id="deleteFileModal">
-      <form
-        class="dialog-form"
-        method="post"
-        action="/file/delete?fileId=<%= locals.file.id %>&folderId=<%= locals.file.folderId %>"
-      >
-        <div class="formHeader">
-          <h1>Are you sure?</h1>
-        </div>
-        <div class="formInputContainer">
-          <p>This action cannot be undone</p>
-          <div class="dialogButtonContainer">
-            <button class="redBtn actionBtn borderTransition" type="submit">
-              Delete
-            </button>
-            <button
-              class="actionBtn borderTransition"
-              type="button"
-              onclick="closeDeleteFileModal()"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </form>
-      <%- include('./partials/loading') %>
-    </dialog>
   </body>
 </html>

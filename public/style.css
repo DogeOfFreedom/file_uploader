@@ -30,6 +30,10 @@
     --yellowgreen: rgb(175, 238, 51);
     
     --red: rgb(216, 11, 11);
+
+    /* Animated BG Items */
+    --item-width: 100px;
+    --num-items: 10
 }
 
 @font-face {
@@ -42,27 +46,26 @@
     src: url("./fonts/Raleway-VariableFont_wght.ttf");
 }
 
-body {
+body {   
     display: flex;
     flex-direction: column;
     margin: 0px;
     height: 100vh;
-    background-color: var(--black2-5);
-}
-
-.centeredBody {
+    background-color: var(--black4);
+    overflow: hidden;
     justify-content: center;
     align-items: center;
 }
 
 /* Header */
 header {
+    position: absolute;
+    top: 0%;
     display: flex;
-    padding: var(--small) 0px;
-    margin-bottom: var(--big);
-    padding-top: var(--medium);
-    padding-left: var(--big);
-    gap: var(--medium);
+    width: 100%;
+    padding: var(--big) 0px 0px var(--big);
+    margin-left: var(--medium);
+    gap: var(--medium)
 }
 
 a {
@@ -104,11 +107,19 @@ button i {
     font-size: var(--page-header);
 }
 
+.directory {
+    font-family: poppins;
+    font-size: var(--important);
+}
+
 .main {
     flex: 1;   
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
-    padding: 0px var(--big) var(--big) var(--big);
+    padding: 0px var(--big);
+    width: calc(100vw - var(--big) * 2);
+    max-height: 80vh;
+    margin-top: var(--big);
 }
 
 .mainGrid {
@@ -116,21 +127,40 @@ button i {
     border-radius: var(--medium);
     height: 100%;
     display: grid;
-    grid-template: 1fr 10% / 1fr;
-    background-color: var(--black3-5); 
+    grid-template: 1fr 20% / 1fr;
+    background-color: rgba(15,15,15, 0.3); 
 }
 
-.uploadContainer {
+.filesUIContainer {
     --radius: calc(var(--medium) - var(--border));
 
+    position: relative;
     grid-row: 2 / 3;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     gap: var(--medium);
     max-width: 100%;
     border-radius: 0px 0px var(--radius) var(--radius);
     padding: var(--small) var(--medium);
     background-color: var(--black3);
+}
+
+.directoryUIContainer {
+    display: flex;
+    gap: var(--medium);
+}
+
+.directoryButtonsContainer {
+    display: flex;
+    gap: var(--medium);
+}
+
+@media (max-width: 640px) {
+    .directoryButtonsContainer {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .actionBtn, .customFileUpload {
@@ -175,7 +205,9 @@ button i {
     }
 }
 
-header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:hover {
+header button:hover, .actionBtn:hover, .actionBtn:focus-visible, 
+.customFileUpload:hover, .customFileUpload:focus-visible, 
+.smallActionBtn:hover, .smallActionBtn:focus-visible {
     animation: colourTransitionBorder 1s linear infinite alternate, 
     pulse 0.9s cubic-bezier( 0.79, 0.18, 0.32, 0.83 ) infinite alternate;
     color: black;
@@ -208,6 +240,7 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:
     --radius: calc(var(--medium) - var(--border));
 
     width: 100%;
+    overflow-y: scroll;
     box-sizing: border-box;
     position: relative;
     display: grid;
@@ -215,31 +248,46 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:
     grid-template-rows: repeat(auto-fill, 150px);
     grid-template-columns: repeat(auto-fit, 175px);
     padding: var(--medium);
-    gap: var(--small);
+    gap: var(--medium);
     border-radius: var(--radius) var(--radius) 0px 0px;
+    margin: var(--small) 0px;
+}
+
+@supports selector(::-webkit-scrollbar) {
+    .directoryContainer::-webkit-scrollbar {
+        background: rgba(0,0,0,0);
+        width: 10px;
+    }
+
+    .directoryContainer::-webkit-scrollbar-thumb {
+        background: rgb(138, 138, 138);
+        border-radius: var(--small);
+        width: 5px;
 }
 
 .itemLinkContainer {
     justify-self: center;
     align-self: center;
+    border-radius: var(--medium);
     height: 150px;
     width: 175px;
-    border-radius: var(--medium);
-    overflow: hidden;
+    outline: none;
 }
 
 .directoryItem {
-    height: 100%;
-    width: 100%;
+    height: 150px;
+    width: 175px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center; 
     color: white;
     cursor: pointer;
+    border-radius: var(--small);
+    outline: none;
 }
 
-.directoryItem:hover {
+.directoryItem:hover, .directoryItem:focus-visible {
     color: black;
     animation: 1s colourTransitionNoBorder infinite alternate;
     animation-timing-function: linear;
@@ -257,6 +305,11 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:
 .directoryItem p {
     font-family: poppins;
     font-size: var(--important);
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    text-align: center;
+    overflow: hidden;
+    width: 175px;
 }
 
 .directoryIcon {
@@ -273,19 +326,13 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:
     justify-content: center;
 }
 
-.backBtn {
-    position: absolute;
-    bottom: 0%;
-    transform: translate(var(--medium), -50%);
-}
-
 .fileBackBtn {
     position: absolute;
     left: var(--medium);
 }
 
 .card {
-    width: 40%;
+    width: 1400px;
     gap: 10px;
     border: var(--border) solid var(--black4);
     border-radius: var(--big);
@@ -296,6 +343,21 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:
     align-items: center;
     margin-bottom: var(--big);
     position: relative;
+}
+
+@media (max-width: 1400px) {
+    .card {
+        width: 90%;
+    }
+}
+
+@media (max-width: 910px) {
+    .fileBackBtn {
+        position: absolute;
+        left: 50%;
+        bottom: 0%;
+        transform: translate(-50%, calc(100% + var(--medium)));
+    }
 }
 
 .card img {
@@ -309,11 +371,47 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:
     margin-bottom: var(--big);
 }
 
+.previewIconContainer {
+    font-family: poppins;
+    font-size: 100px;
+    color: white;
+    margin-bottom: var(--big);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--medium);
+
+    span {
+        font-size: var(--important);
+    }
+}
+
 .fileButtons {
     margin-top: 20px;
     display: flex;
     align-items: center;
     gap: var(--medium);
+}
+
+@media (max-width: 740px) {
+    .fileButtons {
+        flex-direction: column;
+        width: 100%;
+
+        button, a {
+            width: 100%;
+        }
+    }
+
+    .fileBackBtn {
+        position: static;
+        transform: translate(0, 0);
+    }
+
+    body {
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
 }
 
 .infoSegment {
@@ -335,10 +433,29 @@ header button:hover, .actionBtn:hover, .customFileUpload:hover, .smallActionBtn:
 
 .infoTitle {
     color: var(--white2);
+    flex: 1;    
 }
 
 .infoData {
     color: var(--white1);
+    max-width: 70%;
+    flex: 3;
+    word-break: break-all;
+    white-space: wrap;
+    text-align: start;
+}
+
+@media (max-width: 670px) {
+    .infoData {
+        text-align: end;
+    }
+}
+
+.text {
+    color: var(--white1);
+    font-size: var(--important);
+    font-family: poppins;
+    text-align: center;
 }
 
 form {
@@ -503,6 +620,7 @@ input[type="file"] {
     text-align: center;
     padding: var(--small);
     margin-right: 20px;
+    outline: none;
 }
 
 .uploadedFile {
@@ -633,3 +751,118 @@ input[type="file"] {
 #uploadFileModal p, #createFolderModal p {
     margin: 0px;
 }
+
+/* Moving Background Elements*/
+.overflowContainer {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -1;
+}
+
+.animatedBGContainer {
+    position: absolute;
+    
+    display: flex;
+    justify-content: flex-end;    
+    transform: rotate(-15deg);
+    width: 300vw;
+    height: 150vh;
+    z-index: -1;
+}
+
+.animatedItemContainer {
+    width: 240vw;        
+    display: flex;
+    transform: translateX(20vw);
+    animation: horizontalTranslate 8s linear infinite;
+}
+
+.animatedItem { 
+    height: 100%;
+    width: 10%;
+    overflow: visible;
+    display: flex;
+}
+
+.bgColour {
+    background-color: var(--black4);
+    flex: 4;
+}
+
+.highlightColour {
+    background-color: var(--black3-5);
+    flex: 1
+}
+
+@keyframes horizontalTranslate {
+    from {
+        transform: translateX(4vw);
+    }
+    to {
+        transform: translateX(-16vw);
+    }
+}
+
+/* Moving Background Elements - small scale version*/
+/* .animatedBGContainer {
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;    
+    transform: rotate(-15deg);
+    width: 60vw;
+    height: 200px;
+    z-index: -1;
+    border: 1px solid rgb(0, 179, 255);
+}
+
+.webpage {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) rotate(15deg);
+    height: 100%;
+    width: 20vw;
+    background-color: rgba(255, 106, 0, 0.95);
+    z-index: 100;
+    transform-origin: center;
+}
+
+.animatedItemContainer {
+    width: 48vw;        
+    display: flex;
+    transform: translateX(4vw);
+    animation: horizontalTranslate 5s linear infinite;
+}
+
+.animatedItem { 
+    height: 100%;
+    width: 10%;
+    background-color: yellowgreen;
+    overflow: visible;
+    display: flex;
+}
+
+.bgColour, .highlightColour {
+    flex: auto;
+}
+
+.bgColour {
+    background-color: antiquewhite;
+}
+
+.highlightColour {
+    background-color: yellowgreen;
+}
+
+@keyframes horizontalTranslate {
+    from {
+        transform: translateX(4vw);
+    }
+    to {
+        transform: translateX(-16vw);
+    }
+} */

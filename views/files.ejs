@@ -13,13 +13,14 @@
   </head>
   <body>
     <%- include('./partials/header') %>
+    <%- include('./partials/animatedBG') %>
     <div class="main">
       <div class="mainGrid">
         <div class="directoryContainer">
           <% if (locals.folders.length > 0) { %>
             <% locals.folders.forEach(folder => { %>
-              <a class="itemLinkContainer" href="/files?folderId=<%=folder.id%>">
-                <div class="directoryItem">
+              <a tabindex="-1" class="itemLinkContainer" href="/files?folderId=<%=folder.id%>">
+                <div tabindex="0" class="directoryItem">
                   <i class="directoryIcon fa-solid fa-folder"></i>
                   <p><%= folder.foldername %></p>
                 </div>
@@ -28,41 +29,48 @@
           <% } %>
           <% if(locals.files.length > 0) { %>
             <% locals.files.forEach(file => { %> 
-              <a class="itemLinkContainer" href="/files/file?fileId=<%=file.id%>">
-                <div class="directoryItem">
+              <a tabindex="-1" class="itemLinkContainer" href="/files/file?fileId=<%=file.id%>">
+                <div tabindex="0" class="directoryItem">
                   <i class="directoryIcon fa-solid fa-file"></i>
                   <p><%= file.filename %>.<%=file.type%></p>
                 </div>  
               </a>  
             <% }) %> 
           <% } %>
-          <% if(locals.currentFolder) { %>
-            <a
-              tabindex="-1"
-              href="/files<%= locals.currentFolder.folder ? `?folderId=${locals.currentFolder.folder}` : ''%>"
-              class="backBtn"
-            >
-              <%- include('./partials/backButton') %>
-            </a>
-          <% } %>
+          <% if(locals.files.length < 1 && locals.folders.length < 1) { %>
+            <h1 class="text">Empty</h1>
+          <% } %>          
         </div>
-        <div class="uploadContainer">
-          <button type="button" onclick="openUploadFileModal()" class="borderTransition actionBtn">
-            Upload File <i class="fa-solid fa-file-circle-plus"></i>
-          </button>
-          <button type="button" onclick="openCreateFolderModal()" class="borderTransition actionBtn">
-            Create Folder <i class="fa-solid fa-folder-plus"></i>
-          </button>
-          <% if(locals.currentFolder) { %>
-            <button class="actionBtn" type="button" onclick="openUpdateFolderModal()" class="borderTransition actionBtn">
-              Update Folder <i class="fa-solid fa-pen"></i>
+        <div class="filesUIContainer">
+          <div class="directoryUIContainer">
+            <% if(locals.currentFolder) { %>
+              <a
+                tabindex="-1"
+                href="/files<%= locals.currentFolder.folder ? `?folderId=${locals.currentFolder.folder}` : ''%>"
+                class="backBtn"
+              >
+                <%- include('./partials/backButton') %>
+              </a>
+            <% } %>
+            <div class="rhombus">
+              <span class="directory"><%= locals.dirpath %></span>
+            </div>
+          </div>
+          <div class="directoryButtonsContainer">
+            <button type="button" onclick="openUploadFileModal()" class="borderTransition actionBtn">
+              Upload File <i class="fa-solid fa-file-circle-plus"></i>
             </button>
-            <button class="actionBtn redBtn" type="button" onclick="openDeleteFolderModal()" class="borderTransition actionBtn">
-              Delete Folder <i class="fa-solid fa-trash"></i>
+            <button type="button" onclick="openCreateFolderModal()" class="borderTransition actionBtn">
+              Create Folder <i class="fa-solid fa-folder-plus"></i>
             </button>
-          <% } %>
-          <div class="rhombus">
-            <span class="pageTitle"><%= locals.dirpath %></span>
+            <% if(locals.currentFolder) { %>
+              <button class="actionBtn" type="button" onclick="openUpdateFolderModal()" class="borderTransition actionBtn">
+                Update Folder <i class="fa-solid fa-pen"></i>
+              </button>
+              <button class="actionBtn redBtn" type="button" onclick="openDeleteFolderModal()" class="borderTransition actionBtn">
+                Delete Folder <i class="fa-solid fa-trash"></i>
+              </button>
+            <% } %>
           </div>
         </div>
       </div>
@@ -74,7 +82,7 @@
         </div>
         <div class="formInputContainer">
           <div class="fileUploadContainer">
-            <label class="customFileUpload" for="fileUpload">Choose File</label>
+            <label tabindex="0" class="customFileUpload" for="fileUpload">Choose File</label>
             <input type="file" name="file" id="fileUpload"/>
             <div class="uploadedFile">
               <span></span>
@@ -131,8 +139,8 @@
           <div class="formInputContainer">
             <p>Deleting this folder will delete all of its contents</p>
             <div class="dialogButtonContainer">
-              <button class="redBtn actionBtn borderTransition" type="submit">Delete</button>
-              <button class="actionBtn borderTransition" type="button" onclick="closeDeleteFolderModal()">Cancel</button>
+              <button tabindex="0" class="redBtn actionBtn borderTransition" type="submit">Delete</button>
+              <button tabindex="0" class="actionBtn borderTransition" type="button" onclick="closeDeleteFolderModal()">Cancel</button>
             </div> 
           </div>     
         </form>

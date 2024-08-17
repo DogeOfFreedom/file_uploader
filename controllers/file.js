@@ -132,26 +132,28 @@ const downloadFile = expressAsyncHandler(async (req, res) => {
   const { fileId } = req.query;
 
   // Get cloudinary url of file
-  const { url } = await prisma.file.findUnique({
+  const { url, filename, type } = await prisma.file.findUnique({
     where: {
       id: fileId,
     },
   });
 
+  const path = `public/tmp/${filename}.${type}`;
+
   fetch(url)
     .then((response) => {
-      const ws = Writable.toWeb(fs.createWriteStream("public/tmp/img.png"));
+      const ws = Writable.toWeb(fs.createWriteStream(path));
       return response.body.pipeTo(ws);
     })
     .then(() => {
-      res.download("public/tmp/img.png", (err) => {
+      res.download(path, (err) => {
         if (err) {
           console.log(err);
         } else {
           // Delete after it's sent
-          fs.unlink("public/tmp/img.png", (err) => {
-            if (err) {
-              console.log(err);
+          fs.unlink(path, (e) => {
+            if (e) {
+              console.log(e);
             }
           });
         }
