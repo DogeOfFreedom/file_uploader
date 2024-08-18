@@ -72,7 +72,7 @@ if (process.env.ENV === "development") {
   router.get("/test", async (req, res) => {
     const folder = await prisma.folder.findUnique({
       where: {
-        id: 1,
+        id: "1",
       },
     });
     // console.log(folder);

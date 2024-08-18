@@ -1008,9 +1008,6 @@ const createUser2Folders = async () => {
 };
 
 const populateFilesAndFolder = async () => {
-  await prisma.folder.deleteMany({});
-  await prisma.file.deleteMany({});
-
   await createUser1Folders();
   await createUser2Folders();
 
