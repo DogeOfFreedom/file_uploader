@@ -4,9 +4,14 @@ const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
 
 const dropDB = async () => {
+  await prisma.session.deleteMany({});
+  await prisma.user.deleteMany({});
   await prisma.file.deleteMany({});
   await prisma.folder.deleteMany({});
-  await prisma.user.deleteMany({});
+
+  // await prisma.$executeRaw`DROP TABLE IF EXISTS "File" CASCADE`;
+  // await prisma.$executeRaw`DROP TABLE IF EXISTS "Folder" CASCADE`;
+  // await prisma.$executeRaw`DROP TABLE IF EXISTS "User" CASCADE`;
 };
 
 const populateUser = async () => {
@@ -1009,17 +1014,17 @@ const createUser2Folders = async () => {
 
 const populateFilesAndFolder = async () => {
   await createUser1Folders();
-  await createUser2Folders();
+  // await createUser2Folders();
 
-  await createFolder1Files();
-  await createFolder2Files();
-  await createRootFiles();
+  // await createFolder1Files();
+  // await createFolder2Files();
+  // await createRootFiles();
 };
 
 const populateDB = async (req, res) => {
-  // await dropDB();
+  await dropDB();
   await populateUser();
-  await populateFilesAndFolder();
+  // await populateFilesAndFolder();
   res.sendStatus(200);
 };
 

@@ -4,8 +4,8 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "server": "nodemon app",
-    "debug": "prisma db push && nodemon --inspect app",
+    "start": "npx prisma db push && node app",
+    "debug": "nodemon --inspect app",
     "eslint": "eslint --init"
   },
   "repository": {
