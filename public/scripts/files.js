@@ -36,7 +36,7 @@ const uploadFileSubmit = async (folderId) => {
       filenameInput.value === "" ? filenameComponents[0] : filenameInput.value;
 
     const { exists } = await fetch(
-      `http://localhost:3000/file/exists?filename=${filename}&folderId=${folderId}&type=${type}`,
+      `https://dogeoffreedom-file-uploader.adaptable.app/file/exists?filename=${filename}&folderId=${folderId}&type=${type}`,
       {
         method: "post",
       }
@@ -80,7 +80,7 @@ const createFolderSubmit = async (folderId) => {
   if (value.length >= 1) {
     // Does folder already exist?
     const { exists } = await fetch(
-      `http://localhost:3000/folder/exists?foldername=${value}&folderId=${folderId}`,
+      `https://dogeoffreedom-file-uploader.adaptable.app/folder/exists?foldername=${value}&folderId=${folderId}`,
       {
         method: "post",
       }
@@ -132,7 +132,7 @@ const updateFolderSubmit = async (folderId) => {
   if (value.length >= 1) {
     // Does folder already exist?
     const { exists } = await fetch(
-      `http://localhost:3000/folder/exists?foldername=${value}&folderId=${folderId}`,
+      `https://dogeoffreedom-file-uploader.adaptable.app/folder/exists?foldername=${value}&folderId=${folderId}`,
       {
         method: "post",
       }

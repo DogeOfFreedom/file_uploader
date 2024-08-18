@@ -26,7 +26,7 @@ const updateFileSubmit = async (folderId, type) => {
   if (value.length >= 1) {
     // Does file already exist?
     const { exists } = await fetch(
-      `http://localhost:3000/file/exists?filename=${value}&folderId=${folderId}&type=${type}`,
+      `https://dogeoffreedom-file-uploader.adaptable.app/file/exists?filename=${value}&folderId=${folderId}&type=${type}`,
       {
         method: "post",
       }
