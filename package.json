@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
+  "type": "commonjs",
   "scripts": {
     "start": "npx prisma db push && node app",
     "debug": "nodemon --inspect app",
