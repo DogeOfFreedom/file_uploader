@@ -209,10 +209,10 @@ const updateFile = expressAsyncHandler(async (req, res) => {
 });
 
 const checkIfFileExists = expressAsyncHandler(
-  async (filename, folderId, type) => {
+  async (filename, folderId, type, userId) => {
     const id = folderId === "" ? null : folderId;
     const file = await prisma.file.findFirst({
-      where: { filename, folderId: id, type },
+      where: { filename, folderId: id, type, userId },
     });
     if (file) {
       return true;
@@ -223,7 +223,8 @@ const checkIfFileExists = expressAsyncHandler(
 
 const doesFileExist = expressAsyncHandler(async (req, res) => {
   const { filename, folderId, type } = req.query;
-  const exists = await checkIfFileExists(filename, folderId, type);
+  const { id } = req.user;
+  const exists = await checkIfFileExists(filename, folderId, type, id);
   if (exists) {
     res.json({
       exists: true,

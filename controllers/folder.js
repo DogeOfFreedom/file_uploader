@@ -22,10 +22,10 @@ const createFolder = expressAsyncHandler(async (req, res) => {
 });
 
 const checkIfFolderExists = expressAsyncHandler(
-  async (foldername, folderId) => {
+  async (foldername, folderId, userId) => {
     const id = folderId === "" ? null : folderId;
     const folder = await prisma.folder.findFirst({
-      where: { foldername, folder: id },
+      where: { foldername, folder: id, userId },
     });
     if (folder) {
       return true;
@@ -36,7 +36,8 @@ const checkIfFolderExists = expressAsyncHandler(
 
 const doesFolderExist = expressAsyncHandler(async (req, res) => {
   const { foldername, folderId } = req.query;
-  const exists = await checkIfFolderExists(foldername, folderId);
+  const { id } = req.user;
+  const exists = await checkIfFolderExists(foldername, folderId, id);
   if (exists) {
     res.json({
       exists: true,
