@@ -137,7 +137,7 @@ const downloadFile = expressAsyncHandler(async (req, res) => {
     },
   });
 
-  const path = `public/tmp/${filename}.${type}`;
+  const path = `public/${filename}.${type}`;
 
   fetch(url)
     .then((response) => {
