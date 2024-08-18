@@ -41,7 +41,8 @@ router.post(
         return Promise.resolve();
       }
       const { folderId } = req.query;
-      const exists = await checkIfFolderExists(value, folderId);
+      const { id } = req.user;
+      const exists = await checkIfFolderExists(value, folderId, id);
       if (exists) {
         return Promise.reject();
       }
