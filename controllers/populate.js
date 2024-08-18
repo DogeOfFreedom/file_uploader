@@ -1020,7 +1020,7 @@ const populateFilesAndFolder = async () => {
 };
 
 const populateDB = async (req, res) => {
-  await dropDB();
+  // await dropDB();
   await populateUser();
   await populateFilesAndFolder();
   res.sendStatus(200);

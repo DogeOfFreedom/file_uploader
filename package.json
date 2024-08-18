@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "server": "nodemon app",
-    "debug": "nodemon --inspect app",
+    "debug": "prisma db push && nodemon --inspect app",
     "eslint": "eslint --init"
   },
   "repository": {
