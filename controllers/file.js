@@ -58,10 +58,9 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
 
   // Redirect
   if (!folderId) {
-    res.redirect("/files");
-  } else {
-    res.redirect(`/files?folderId=${folderId}`);
+    return res.redirect("/files");
   }
+  return res.redirect(`/files?folderId=${folderId}`);
 });
 
 const getFilePath = expressAsyncHandler(async (folder) => {
