@@ -64,10 +64,15 @@ header {
     top: 0%;
     display: flex;
     width: 100%;
-    padding: var(--big) 0px 0px var(--big);
-    margin-left: var(--medium);
+    padding: var(--big) var(--big) 0px var(--big);
+    box-sizing: border-box;
     gap: var(--medium);
     height: var(--header-height);
+}
+
+.headerNavButtonContainer {
+    display: flex;
+    gap: var(--medium)
 }
 
 a {
@@ -123,6 +128,17 @@ button i {
     max-height: 80vh;
     margin-top: calc(var(--big) + var(--header-height) + var(--medium));
     /* margin-bottom: var(--big); */
+}
+
+@media (max-width: 620px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main {
+        margin-top: calc(var(--big) + var(--header-height) + var(--medium) * 3);
+    }
 }
 
 .mainGrid {
@@ -412,12 +428,12 @@ header button:hover, .actionBtn:hover, .actionBtn:focus-visible,
     }
 }
 
-@media (max-height: 1000px) {
-    .scrollableBody {
-        overflow: auto;
-        overflow-x: hidden;
-    }
+/* @media (max-height: 1000px) { */
+.scrollableBody {
+    overflow: auto;
+    overflow-x: hidden;
 }
+/* } */
 
 .infoSegment {
     background-color: var(--black4);
