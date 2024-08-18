@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
 
@@ -19,17 +20,15 @@ const populateUser = async () => {
   const passwords = ["123", "321"];
   const ids = ["1", "2"];
   for (let i = 0; i < passwords.length; i += 1) {
-    bcrypt.hash(passwords[i], 10, async (err, hashedPassword) => {
-      if (err) {
-        throw new Error("Error hashing populate db passwords");
-      }
-      await prisma.user.create({
-        data: {
-          id: ids[i],
-          username: usernames[i],
-          password: hashedPassword,
-        },
-      });
+    const hash = await bcrypt
+      .hash(passwords[i], 10)
+      .catch((err) => console.log(err));
+    await prisma.user.create({
+      data: {
+        id: ids[i],
+        username: usernames[i],
+        password: hash,
+      },
     });
   }
 };
@@ -1014,17 +1013,17 @@ const createUser2Folders = async () => {
 
 const populateFilesAndFolder = async () => {
   await createUser1Folders();
-  // await createUser2Folders();
+  await createUser2Folders();
 
-  // await createFolder1Files();
-  // await createFolder2Files();
-  // await createRootFiles();
+  await createFolder1Files();
+  await createFolder2Files();
+  await createRootFiles();
 };
 
 const populateDB = async (req, res) => {
   await dropDB();
   await populateUser();
-  // await populateFilesAndFolder();
+  await populateFilesAndFolder();
   res.sendStatus(200);
 };
 
