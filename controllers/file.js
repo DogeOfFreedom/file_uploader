@@ -212,7 +212,7 @@ const checkIfFileExists = expressAsyncHandler(
   async (filename, folderId, type) => {
     const id = folderId === "" ? null : folderId;
     const file = await prisma.file.findFirst({
-      where: { filename, folder: id, type },
+      where: { filename, folderId: id, type },
     });
     if (file) {
       return true;
