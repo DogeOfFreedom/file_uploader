@@ -14,6 +14,7 @@
 
     /* specific sizing */
     --button-height: 65px;
+    --header-height: 120px;
 
     /* UI Colours */
     --black4: rgb(8, 8, 8);
@@ -65,7 +66,8 @@ header {
     width: 100%;
     padding: var(--big) 0px 0px var(--big);
     margin-left: var(--medium);
-    gap: var(--medium)
+    gap: var(--medium);
+    height: var(--header-height);
 }
 
 a {
@@ -114,12 +116,13 @@ button i {
 
 .main {
     flex: 1;   
-    /* display: flex; */
     flex-direction: column;
     padding: 0px var(--big);
+    padding-bottom: var(--big);
     width: calc(100vw - var(--big) * 2);
     max-height: 80vh;
-    margin-top: var(--big);
+    margin-top: calc(var(--big) + var(--header-height) + var(--medium));
+    /* margin-bottom: var(--big); */
 }
 
 .mainGrid {
@@ -127,7 +130,7 @@ button i {
     border-radius: var(--medium);
     height: 100%;
     display: grid;
-    grid-template: 1fr 20% / 1fr;
+    grid-template: 4fr 1fr / 1fr;
     background-color: rgba(15,15,15, 0.3); 
 }
 
@@ -156,7 +159,7 @@ button i {
     gap: var(--medium);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
     .directoryButtonsContainer {
         display: flex;
         flex-direction: column;
@@ -407,10 +410,12 @@ header button:hover, .actionBtn:hover, .actionBtn:focus-visible,
         position: static;
         transform: translate(0, 0);
     }
+}
 
-    body {
+@media (max-height: 1000px) {
+    .scrollableBody {
+        overflow: auto;
         overflow-x: hidden;
-        overflow-y: scroll;
     }
 }
 
@@ -460,7 +465,8 @@ header button:hover, .actionBtn:hover, .actionBtn:focus-visible,
 
 form {
     align-self: center;
-    width: 40%;
+    width: 90%;
+    max-width: 1020px;
     font-family: poppins;
     color: white;
     display: flex;
@@ -779,7 +785,7 @@ input[type="file"] {
     width: 240vw;        
     display: flex;
     transform: translateX(20vw);
-    animation: horizontalTranslate 8s linear infinite;
+    animation: horizontalTranslate 15s linear infinite;
 }
 
 .animatedItem { 

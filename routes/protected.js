@@ -4,12 +4,12 @@ const { body } = require("express-validator");
 const { checkAuth } = require("../controllers/auth");
 const {
   uploadFile,
-  renderFilesPage,
   renderSpecificFile,
   downloadFile,
   deleteFile,
   updateFile,
   doesFileExist,
+  renderDirectory,
 } = require("../controllers/file");
 const {
   createFolder,
@@ -56,7 +56,7 @@ router.post(
 router.post("/folder/exists", doesFolderExist);
 
 // Directory
-router.get("/files", renderFilesPage);
+router.get("/files", renderDirectory);
 
 // Specific File Page
 router.get("/files/file", renderSpecificFile);

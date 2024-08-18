@@ -77,7 +77,7 @@ const getFilePath = expressAsyncHandler(async (folder) => {
   return `/${folder.foldername}`;
 });
 
-const renderFilesPage = expressAsyncHandler(async (req, res) => {
+const renderDirectory = expressAsyncHandler(async (req, res) => {
   const { folderId } = req.query;
   const userId = String(req.user.id);
   let dirpath = "Current Path: /root";
@@ -98,7 +98,7 @@ const renderFilesPage = expressAsyncHandler(async (req, res) => {
       where: { id: folderId, userId },
     });
     dirpath += await getFilePath(currentFolder);
-    res.render("files", { folders, files, dirpath, currentFolder });
+    res.render("directory", { folders, files, dirpath, currentFolder });
   } else {
     // In root folder
     files = await prisma.file.findMany({
@@ -113,7 +113,7 @@ const renderFilesPage = expressAsyncHandler(async (req, res) => {
         userId,
       },
     });
-    res.render("files", { folders, files, dirpath });
+    res.render("directory", { folders, files, dirpath });
   }
 });
 
@@ -238,7 +238,7 @@ const doesFileExist = expressAsyncHandler(async (req, res) => {
 
 module.exports = {
   uploadFile,
-  renderFilesPage,
+  renderDirectory,
   renderSpecificFile,
   downloadFile,
   getFilePath,
