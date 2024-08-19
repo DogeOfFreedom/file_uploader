@@ -26,7 +26,7 @@ const updateFileSubmit = async (folderId, type) => {
   if (value.length >= 1) {
     // Does file already exist?
     const { exists } = await fetch(
-      `https://dogeoffreedom-file-uploader.adaptable.app/file/exists?filename=${value}&folderId=${folderId}&type=${type}`,
+      `http://localhost:3000/file/exists?filename=${value}&folderId=${folderId}&type=${type}`,
       {
         method: "post",
       }
@@ -49,3 +49,5 @@ const updateFileSubmit = async (folderId, type) => {
     error.textContent = "Folder Name cannot be empty";
   }
 };
+
+// https://dogeoffreedom-file-uploader.adaptable.app

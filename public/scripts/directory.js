@@ -33,10 +33,12 @@ const uploadFileSubmit = async (folderId) => {
 
     // Did user enter custom file name?
     const filename =
-      filenameInput.value === "" ? filenameComponents[0] : filenameInput.value;
+      filenameInput.value.trim() === ""
+        ? filenameComponents[0]
+        : filenameInput.value;
 
     const { exists } = await fetch(
-      `https://dogeoffreedom-file-uploader.adaptable.app/file/exists?filename=${filename}&folderId=${folderId}&type=${type}`,
+      `http://localhost:3000/file/exists?filename=${filename}&folderId=${folderId}&type=${type}`,
       {
         method: "post",
       }
@@ -77,10 +79,11 @@ const createFolderSubmit = async (folderId) => {
   const { value } = document.querySelector("#createFolderModal form input");
   const error = document.querySelector("#createFolderModal p");
 
-  if (value.length >= 1) {
+  const foldername = value.trim();
+  if (foldername.length >= 1) {
     // Does folder already exist?
     const { exists } = await fetch(
-      `https://dogeoffreedom-file-uploader.adaptable.app/folder/exists?foldername=${value}&folderId=${folderId}`,
+      `http://localhost:3000/folder/exists?foldername=${foldername}&folderId=${folderId}`,
       {
         method: "post",
       }
@@ -132,7 +135,7 @@ const updateFolderSubmit = async (folderId) => {
   if (value.length >= 1) {
     // Does folder already exist?
     const { exists } = await fetch(
-      `https://dogeoffreedom-file-uploader.adaptable.app/folder/exists?foldername=${value}&folderId=${folderId}`,
+      `http://localhost:3000/folder/exists?foldername=${value}&folderId=${folderId}`,
       {
         method: "post",
       }

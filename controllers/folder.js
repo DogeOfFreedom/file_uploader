@@ -23,7 +23,7 @@ const createFolder = expressAsyncHandler(async (req, res) => {
 
 const checkIfFolderExists = expressAsyncHandler(
   async (foldername, folderId, userId) => {
-    const id = folderId === "" ? null : folderId;
+    const id = folderId === undefined ? null : folderId;
     const folder = await prisma.folder.findFirst({
       where: { foldername, folder: id, userId },
     });

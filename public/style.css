@@ -102,6 +102,7 @@ button i {
     align-items: center;
     height: var(--button-height);
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .rhombus span {
@@ -112,11 +113,6 @@ button i {
 .pageTitle {
     font-family: poppins;
     font-size: var(--page-header);
-}
-
-.directory {
-    font-family: poppins;
-    font-size: var(--important);
 }
 
 .main {
@@ -146,7 +142,7 @@ button i {
     border-radius: var(--medium);
     height: 100%;
     display: grid;
-    grid-template: 4fr 1fr / 1fr;
+    grid-template: 4fr 1fr / 100%;
     background-color: rgba(15,15,15, 0.3); 
 }
 
@@ -159,7 +155,8 @@ button i {
     flex-direction: column;
     justify-content: center;
     gap: var(--medium);
-    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
     border-radius: 0px 0px var(--radius) var(--radius);
     padding: var(--small) var(--medium);
     background-color: var(--black3);
@@ -173,6 +170,14 @@ button i {
 .directoryButtonsContainer {
     display: flex;
     gap: var(--medium);
+}
+
+.directory {
+    font-family: poppins;
+    font-size: var(--important);
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media (max-width: 900px) {
@@ -334,10 +339,6 @@ header button:hover, .actionBtn:hover, .actionBtn:focus-visible,
 .directoryIcon {
     font-size: 75px;
     text-align: center;
-}
-
-.directory {
-    grid-row: 1 / 2;
 }
 
 .contentContainer {

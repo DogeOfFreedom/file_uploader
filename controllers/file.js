@@ -15,8 +15,8 @@ const uploadFile = expressAsyncHandler(async (req, res) => {
   const fileExtensionSeperatorIndex = originalname.lastIndexOf(".");
   const type = originalname.substr(fileExtensionSeperatorIndex + 1); // +1 to remove the '.'
 
-  // User did not enter custom file name
-  if (!filename) {
+  // User did not enter custom file name or filename is only spaces
+  if (!filename || filename.trim() === "") {
     filename = originalname.substr(0, fileExtensionSeperatorIndex);
   }
 
